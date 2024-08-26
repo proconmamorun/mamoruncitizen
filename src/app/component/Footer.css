@@ -1,5 +1,5 @@
 .Footer-button {
-    width: 30px; /* 幅を300ピクセルに設定 */
-    height: 20px; /* 高さを200ピクセルに設定 */
-    
+    width: 50px;
+    height: 50px;
+    margin: 10px 20px; /* 上下に10ピクセル、左右に20ピクセルの間隔 */
 }
