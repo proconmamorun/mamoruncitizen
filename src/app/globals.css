@@ -1,6 +1,16 @@
 .App {
   background-color: rgb(241, 233, 233);
+  width: 100%;  /* 幅を100%に設定 */
+  height: 100%; /* 高さを100%に設定 */
+  margin: 0; /* 余白をなくす */
+  padding: 0; /* パディングをなくす */
 }
+body,html {
+  width: 100vw; /* 幅を100%に設定 */
+  height: 100vh; /* 高さを100%に設定 */
+}
+
+
 
 .Apple {
   background-color: blue;
@@ -9,18 +19,18 @@
 .button-container {
   display: flex;
   flex-direction: column; /* 縦方向に配置 */
-  gap: 10px; /* ボタン間のスペース */
+  gap: 100px; /* ボタン間のスペース */
   align-items: center; /* ボタンを中央揃えにする */
 }
 
 .mainbotn-button {
-  font-size: 40px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
+  font-size: 40px; /* 文字サイズを40ピクセルに設定 */
+  padding: 10px 20px; /* 上下のパディングを10ピクセル、左右のパディングを20ピクセルに設定 */
+  border-radius: 5px; /* 角を5ピクセル丸める（ボタンの角が少し丸くなる） */
+  background-color: #007bff; /* 背景色を#007bff（青色）に設定 */
+  color: white; /* 文字色を白に設定 */
+  border: none; /* 枠線をなくす */
+  cursor: pointer; /* マウスをホバーしたときにカーソルをポインター（手の形）に変更 */
   width: 200px; /* ボタンの幅を指定 */
 }
 

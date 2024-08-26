@@ -1,5 +1,6 @@
 import React from "react";
 import { Mainbotn } from "./component/mybotan";
+import { Footer } from "./component/footer";
 
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
         <Mainbotn name="避難誘導" />
         <Mainbotn name="危険箇所共有" />
       </div>
+      <Footer/>
       <div className="button-container">
         
       </div>
