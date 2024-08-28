@@ -1,0 +1,6 @@
+.mainbotn-button {
+    width: 300px;
+    height: 150px;
+    margin: 10px 20px; /* 上下に10ピクセル、左右に20ピクセルの間隔 */
+    border-radius: 50px; /* すべての角を10ピクセル丸める */
+}

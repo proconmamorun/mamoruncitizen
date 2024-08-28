@@ -19,16 +19,17 @@ body,html {
 .button-container {
   display: flex;
   flex-direction: column; /* 縦方向に配置 */
-  gap: 100px; /* ボタン間のスペース */
+  gap: 50px; /* ボタン間のスペース */
   align-items: center; /* ボタンを中央揃えにする */
+  border-radius: 10px; /* すべての角を10ピクセル丸める */
 }
 
 .mainbotn-button {
   font-size: 40px; /* 文字サイズを40ピクセルに設定 */
   padding: 10px 20px; /* 上下のパディングを10ピクセル、左右のパディングを20ピクセルに設定 */
   border-radius: 5px; /* 角を5ピクセル丸める（ボタンの角が少し丸くなる） */
-  background-color: #007bff; /* 背景色を#007bff（青色）に設定 */
-  color: white; /* 文字色を白に設定 */
+  background-color: #F9917B; /* 背景色を#007bff（青色）に設定 */
+  color: #000000; /* 文字色を白に設定 */
   border: none; /* 枠線をなくす */
   cursor: pointer; /* マウスをホバーしたときにカーソルをポインター（手の形）に変更 */
   width: 200px; /* ボタンの幅を指定 */
@@ -36,6 +37,16 @@ body,html {
 
 .mainbotn-button:hover {
   background-color: #0056b3; /* ホバー時の背景色 */
+}
+
+Footer {
+  position: fixed;  /* フッターを固定位置に設定 */
+  bottom: 0;        /* 画面の下部に配置 */
+  width: 100%;      /* フッターの幅を画面いっぱいに設定 */
+  background-color: #333; /* フッターの背景色を設定 */
+  color: white;     /* テキストの色を白に設定 */
+  text-align: center; /* テキストを中央揃えに設定 */
+  padding: 10px 0;  /* 上下のパディングを10ピクセルに設定 */
 }
 
 Footer {

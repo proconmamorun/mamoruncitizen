@@ -1,5 +1,6 @@
 "use client"
 import React, { Component } from "react";
+import './Mainbotn.css';
 
 interface MainbotnProps {
   name: string;
