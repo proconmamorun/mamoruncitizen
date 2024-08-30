@@ -17,9 +17,6 @@ export default function Home() {
         </button>
       </div>
         <Footer/>
-      <div className="button-container">
-        
-      </div>
     </div>
   );
 }
