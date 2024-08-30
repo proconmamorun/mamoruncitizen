@@ -8,9 +8,9 @@
 body,html {
   width: 100vw; /* 幅を100%に設定 */
   height: 100vh; /* 高さを100%に設定 */
+  margin: 0; /* 余白をなくす */
+  padding: 0; /* パディングをなくす */
 }
-
-
 
 .Apple {
   background-color: blue;
@@ -49,16 +49,9 @@ body,html {
   position: fixed;/*←絶対位置*/
   bottom: 0; /*下に固定*/
   width: 100%;      /* フッターの幅を画面いっぱいに設定 */
-  background-color: #333; /* フッターの背景色を設定 */
+  background-color: #F9B07B; /* フッターの背景色を設定 */
   justify-content: center; /* アイテムを中央に寄せる */
   padding: 10px 0;  /* 上下のパディングを10ピクセルに設定 */
-}
-
-Footer > div {
-  border: 1px solid #999;
-  background: #bad7f0;
-  padding: 10px;
-  width: 100px;
 }
 
 #darkred{
