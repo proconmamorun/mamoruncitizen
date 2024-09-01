@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 
 export default function Home() {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <div className="App">
@@ -22,4 +22,5 @@ export default function Home() {
       </div>
     </div>
   );
+
 }
