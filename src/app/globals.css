@@ -12,26 +12,3 @@ body,html {
   padding: 0; /* パディングをなくす */
 }
 
-
-
-.Footer {
-  display: flex;
-  position: fixed;/*←絶対位置*/
-  bottom: 0; /*下に固定*/
-  width: 100%;      /* フッターの幅を画面いっぱいに設定 */
-  background-color: #F9B07B; /* フッターの背景色を設定 */
-  justify-content: center; /* アイテムを中央に寄せる */
-  padding: 10px 0;  /* 上下のパディングを10ピクセルに設定 */
-}
-
-#darkred{
-  background-color:#F9917B;
-}
-
-#orange{
-  background-color:#F9B07B;
-}
-
-#green{
-  background-color:#98CB9A;
-}

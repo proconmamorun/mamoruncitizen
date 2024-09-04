@@ -1,11 +1,18 @@
 // src/app/safety/page.tsx
 import React from 'react';
+import "./safetypage.css";
 
 const SafetyPage = () => {
   return (
-    <div>
-      <h1>安全確認ページ</h1>
-      <p>これは安全確認のためのページです。</p>
+    <div className="App">
+      <div className="safetybutton-container">
+        <button className="safetybutton-button" id="darkred">
+        救助が必要
+        </button>
+        <button className="safetybutton-button" id="green">
+        無事
+        </button>
+      </div>
     </div>
   );
 };
