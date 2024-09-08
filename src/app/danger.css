@@ -1,0 +1,18 @@
+.camera-preview {
+    background-color: #D9D9D9;
+    height: 460px;
+    width: 310px; 
+    margin: 0 auto; /* 中央寄せ */
+}
+
+.mainbotn-danger {
+    font-size: 40px; /* フォントサイズを調整 */
+    border-radius: 20px; /* ボタンの角をより丸くする */
+    border: none;
+    cursor: pointer;
+    width: 315px;
+    height: 90px;
+    color: black; /* 文字色を黒に */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 影を追加 */
+    margin:10px 0 10px 0;
+}

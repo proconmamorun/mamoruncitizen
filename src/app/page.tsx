@@ -1,22 +1,18 @@
+"use client"
 import React from "react";
 import { Footer } from "./component/footer";
-
+import "./danger.css"
 
 export default function Home() {
   return (
     <div className="App">
-      <div className="button-container">
-        <button className="mainbotn-button" id="darkred">
-          安否確認
-        </button>
-        <button className="mainbotn-button" id="orange">
-          避難誘導
-        </button>
-        <button className="mainbotn-button" id="green">
-          危険箇所共有
-        </button>
+      <button className="mainbotn-danger" id="darkred">撮り直す</button>
+
+      <div className="camera-preview">
+        {/* ここにカメラのプレビューが表示される */}
       </div>
-        <Footer/>
+
+      <button className="mainbotn-danger" id="green">送信</button>
     </div>
   );
 }

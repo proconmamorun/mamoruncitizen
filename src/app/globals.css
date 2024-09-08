@@ -1,31 +1,24 @@
-.App {
-  background-color: rgb(241, 233, 233);
-  width: 100%;  /* 幅を100%に設定 */
-  height: 100%; /* 高さを100%に設定 */
-  margin: 0; /* 余白をなくす */
-  padding: 0; /* パディングをなくす */
-}
-body,html {
-  width: 100vw; /* 幅を100%に設定 */
-  height: 100vh; /* 高さを100%に設定 */
-  margin: 0; /* 余白をなくす */
-  padding: 0; /* パディングをなくす */
+html, body {
+  margin: 0;
+  padding: 0;
 }
 
-.Apple {
-  background-color: blue;
+.App {
+  background-color: #FAE8E0; /* ライトピンクの背景色 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: auto;
+  padding: 20px; /* パディングを追加して全体的な余白を調整 */
+  align-items: center;
 }
 
 .button-container {
   display: flex;
-  flex-direction: column; /* 縦方向に配置 */
-  gap: 50px; /* ボタン間のスペース */
-  width: 100%; /* 幅を画面いっぱいに設定 */
-  height: 100vh; /* コンテナの高さを画面全体に設定 */
-  box-sizing: border-box; /* パディングとボーダーを含めてサイズを計算 */
-  justify-content: center; /* 水平方向に中央揃え */
-  align-items: center; /* 垂直方向に中央揃え */
+  justify-content: center;
+  margin : 0;
 }
+
 
 .mainbotn-button {
   font-size: 40px; /* 文字サイズを40ピクセルに設定 */
@@ -34,34 +27,29 @@ body,html {
   color: #000000; /* 文字色を白に設定 */
   border: none; /* 枠線をなくす */
   cursor: pointer; /* マウスをホバーしたときにカーソルをポインター（手の形）に変更 */
-  width: 300px;
+  width: 310px;
   height: 150px;
   margin: 10px 20px; /* 上下に10ピクセル、左右に20ピクセルの間隔 */
   border-radius: 20px; /* すべての角を10ピクセル丸める */
 }
 
-.mainbotn-button:hover {
-  background-color: #0056b3; /* ホバー時の背景色 */
+#darkred {
+  background-color: #F9917B; /* 赤色に */
+}
+
+#green {
+  background-color: #98CB9A; /* 緑色に */
 }
 
 .Footer {
   display: flex;
-  position: fixed;/*←絶対位置*/
-  bottom: 0; /*下に固定*/
-  width: 100%;      /* フッターの幅を画面いっぱいに設定 */
-  background-color: #F9B07B; /* フッターの背景色を設定 */
   justify-content: center; /* アイテムを中央に寄せる */
-  padding: 10px 0;  /* 上下のパディングを10ピクセルに設定 */
-}
-
-#darkred{
-  background-color:#F9917B;
-}
-
-#orange{
-  background-color:#F9B07B;
-}
-
-#green{
-  background-color:#98CB9A;
+  align-items: center; /* アイテムを垂直方向に中央に寄せる */
+  background-color: #F9B07B; /* フッターの背景色を設定 */
+  padding: 10px 0; /* 上下のパディングを設定 */
+  position: fixed; /* フッターを画面の下に固定 */
+  bottom: 0; /* 画面の最下部に位置させる */
+  left: 0; /* 左端から開始 */
+  right: 0; /* 右端まで広がる */
+  width: 100%; /* フッターの幅を画面いっぱいに設定 */
 }
