@@ -36,6 +36,9 @@ html, body {
 #darkred {
   background-color: #F9917B; /* 赤色に */
 }
+#background-color {
+  background-color: #FFE7D6;/* 背景色 */
+}
 
 #green {
   background-color: #98CB9A; /* 緑色に */
@@ -43,13 +46,13 @@ html, body {
 
 .Footer {
   display: flex;
-  justify-content: center; /* アイテムを中央に寄せる */
-  align-items: center; /* アイテムを垂直方向に中央に寄せる */
-  background-color: #F9B07B; /* フッターの背景色を設定 */
-  padding: 10px 0; /* 上下のパディングを設定 */
-  position: fixed; /* フッターを画面の下に固定 */
-  bottom: 0; /* 画面の最下部に位置させる */
-  left: 0; /* 左端から開始 */
-  right: 0; /* 右端まで広がる */
-  width: 100%; /* フッターの幅を画面いっぱいに設定 */
+  justify-content: center;
+  align-items: center;
+  background-color: #B5DFCA; /* フッターの背景色を設定 */
+  padding: 10px 0;
+  position: fixed; /* 画面の下部に固定 */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
 }

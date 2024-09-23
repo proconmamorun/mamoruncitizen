@@ -1,0 +1,211 @@
+.header {
+    display: flex;
+    justify-content: center; /* 全体を中央揃えに */
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    color: black;
+    position: relative;
+}
+
+.header-title {
+    font-size: 35px; /* フォントサイズを35pxに設定 */
+    margin-left: 10px; /* タイトルと戻るボタンの間に余白を追加 */
+}
+
+.back-button {
+    background-color: #52514D; /* 戻るボタンの色を変更 */
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-right: 10px; /* ボタンとテキストの間に余白を追加 */
+    position: absolute;
+    left: 10px; /* 左端から適度に離す */
+}
+
+.back-button img {
+    width: 20px; /* アイコンの幅と高さ */
+    height: 20px;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+  
+  
+  .camera-preview {
+    background-color: #D9D9D9;
+    height: 460px;
+    width: 310px;
+    margin: 20px auto;
+  }
+  
+  .capture-button {
+    background-color: blanchedalmond;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    border: 5px solid black;
+    cursor: pointer;
+    position: relative;
+    margin-top: 10px; /* 上に少し余白を設ける */
+  }
+  
+  .capture-button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;   /* 中心の円の幅を調整 */
+    height: 40px;  /* 中心の円の高さを調整 */
+    background-color: black;
+    border-radius: 50%;
+  }
+  
+/* スクロールを防ぐためにbodyの設定を追加 */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* スクロールを防ぐ */
+}
+
+.App {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh; /* 画面全体を占める */
+    overflow: hidden;
+}
+
+.header {
+    display: flex;
+    justify-content: center; /* 全体を中央揃え */
+    align-items: center;
+    position: relative;
+    width: 100%;
+    padding: 10px;
+    color: black;
+}
+
+.header-title {
+    font-size: 35px; /* フォントサイズを35pxに設定 */
+    margin: 0 auto; /* タイトル自体を中央揃え */
+}
+
+.back-button {
+    background-color: #4D4D4D; /* 戻るボタンの色を変更 */
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    left: 10px; /* 左端に固定 */
+}
+
+.back-button img {
+    width: 20px; /* アイコンの幅と高さ */
+    height: 20px;
+}
+
+
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.alert-message {
+    color: #D4A049;
+    font-size: 30px;
+    font-weight: bold;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.camera-preview {
+    background-color: #D9D9D9;
+    height: 460px;
+    width: 310px;
+    margin: 20px auto;
+}
+
+.camera-container {
+    background-color: #52514D; /* 黒い背景色を設定 */
+    height: 120px; /* 背景の高さを調整 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* 横幅を画面いっぱいに広げる */
+    padding: 0; /* パディングを0にして余白をなくす */
+    position: absolute; /* 親要素に対しての位置を設定 */
+    bottom: 0; /* 画面下部に配置 */
+    left: 0; /* 左端に固定 */
+  }
+  
+  
+  .capture-button {
+    background-color: #4d4d4d; /* ボタンの背景色 */
+    border-radius: 50%; /* 丸い形にする */
+    width: 85px; /* ボタン全体の幅 */
+    height: 85px; /* ボタン全体の高さ */
+    position: relative;
+    border: 8px solid white; /* 白い縁を作るための外側の枠線 */
+    cursor: pointer; /* ホバー時にポインタを表示 */
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .capture-button::before {
+    content: "";
+    background-color: white; /* 内側の白い丸の背景色 */
+    width: 45px; /* 内側の白い丸の幅 */
+    height: 45px; /* 内側の白い丸の高さ */
+    border-radius: 50%; /* 丸い形にする */
+    position: absolute; /* ボタンの中央に配置 */
+  }
+  
+  
+  
+
+/* 「撮り直す」と「送信」ボタンのスタイル */
+.mainbotn-danger {
+    width: 310px; /* カメラプレビューと同じ横幅に設定 */
+    height: 75px; /* 縦幅を少し大きく設定 */
+    border-radius: 30px; /* 角をさらに丸くする */
+    font-size: 35px; /* フォントサイズを調整 */
+    margin: 10px 0; /* ボタン間の余白を追加 */
+    cursor: pointer;
+}
+
+#darkred {
+    background-color: #2FA268; /* 「撮り直す」ボタンの色 */
+    color: white; /* テキストの色 */
+    border: none; /* 枠線をなくす */
+}
+
+#green {
+    background-color: #E69F00; /* 「送信」ボタンの色 */
+    color: white; /* テキストの色 */
+    border: none; /* 枠線をなくす */
+}
