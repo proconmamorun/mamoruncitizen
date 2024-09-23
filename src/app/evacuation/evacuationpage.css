@@ -1,0 +1,36 @@
+.backbutton-button {
+  background-color: #D9D9D9;  /* 背景色を灰色に設定 */
+  border: none;            /* ボーダーを削除 */
+  border-radius: 50%;      /* ボタンを円形にする */
+  width: 50px;             /* ボタンの幅を設定 */
+  height: 50px;            /* ボタンの高さを設定 */
+  display: flex;           /* 中央揃えのためにフレックスボックスを使用 */
+  justify-content: center; /* 水平方向の中央揃え */
+  align-items: center;     /* 垂直方向の中央揃え */
+  cursor: pointer;         /* カーソルをポインタに変更 */
+  margin-right: 10px; /* バックボタンと文字の間にスペースを追加 */
+  align-items: center; /* バックボタンと文字を縦方向に中央揃え */
+  display: flex;
+  align-items: flex-start; /* 子要素を上揃えに設定 */
+}
+
+.backbutton-image {
+  width: 70%;    /* 画像の幅をボタンサイズの70%に設定 */
+  height: auto;  /* 高さは自動で調整 */
+  transform: scaleX(-1);  /* 画像を水平に反転 */
+  
+}
+
+.App {
+  display: flex;
+  align-items: center; /* バックボタンと文字を縦方向に中央揃え */
+  display: flex;
+  align-items: flex-start; /* 子要素を上揃えに設定 */
+}
+
+.App div {
+  font-size: 24px; /* テキストサイズを50pxに設定（必要に応じて調整） */
+  align-items: center; /* バックボタンと文字を縦方向に中央揃え */
+  display: flex;
+  align-items: flex-start; /* 子要素を上揃えに設定 */
+}

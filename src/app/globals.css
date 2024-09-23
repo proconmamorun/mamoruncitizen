@@ -2,7 +2,6 @@ html, body {
   margin: 0;
   padding: 0;
 }
-
 .App {
   background-color: #FAE8E0; /* ライトピンクの背景色 */
   display: flex;
