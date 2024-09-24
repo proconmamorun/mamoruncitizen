@@ -3,7 +3,7 @@ html, body {
   padding: 0;
 }
 .App {
-  background-color: #FAE8E0; /* ライトピンクの背景色 */
+  background-color: #ffffff; /* 白 */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -41,6 +41,12 @@ html, body {
 
 #green {
   background-color: #98CB9A; /* 緑色に */
+}
+#darkgreen {
+  background-color: #2FA268; /* 緑色に */
+}
+#yelow {
+  background-color: #E69F00; /* 黄色に */
 }
 
 .Footer {

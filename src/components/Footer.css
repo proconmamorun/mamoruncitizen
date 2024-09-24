@@ -9,7 +9,7 @@
     position: fixed;/*←絶対位置*/
     bottom: 0; /*下に固定*/
     width: 100%;      /* フッターの幅を画面いっぱいに設定 */
-    background-color: #F9B07B; /* フッターの背景色を設定 */
+    background-color: #B5DFCA; /* フッターの背景色を設定 */
     justify-content: center; /* アイテムを中央に寄せる */
     padding: 10px 0;  /* 上下のパディングを10ピクセルに設定 */
   }

@@ -9,16 +9,18 @@ export default function safety() {
 
   return (
     <div className="App">
+      <p className="safetypage-title">あなたの状況は？</p>
       <div className="safetybutton-container">
-        <button className="safetybutton-button" id="darkred" >
+        <button className="safetybutton-button" id="yelow" onClick={() => router.push('/safety/where')}>
           救助が必要
         </button>
-        <button className="safetybutton-button" id="green" >
+        <button className="safetybutton-button" id="darkgreen" onClick={() => router.push('/safety/where')}>
           無事
+        </button>
+        <button className="safetybutton-button" id="darkgreen" onClick={() => router.push('/safety/where')}>
+          その他
         </button>
       </div>
     </div>
   );
 };
-
-
