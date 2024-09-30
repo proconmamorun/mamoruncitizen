@@ -1,61 +1,16 @@
+/* src/app/globals.css */
 html, body {
   margin: 0;
   padding: 0;
-}
-.App {
-  background-color: #ffffff; /* 白 */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: auto;
-  padding: 20px; /* パディングを追加して全体的な余白を調整 */
-  align-items: center;
-}
-
-.button-container {
-  display: flex;
-  justify-content: center;
-  margin : 0;
-}
-
-
-.mainbotn-button {
-  font-size: 40px; /* 文字サイズを40ピクセルに設定 */
-  padding: 10px 20px; /* 上下のパディングを10ピクセル、左右のパディングを20ピクセルに設定 */
-  background-color: #F9917B; /* 背景色を#007bff（青色）に設定 */
-  color: #000000; /* 文字色を白に設定 */
-  border: none; /* 枠線をなくす */
-  cursor: pointer; /* マウスをホバーしたときにカーソルをポインター（手の形）に変更 */
-  width: 310px;
-  height: 150px;
-  margin: 10px 20px; /* 上下に10ピクセル、左右に20ピクセルの間隔 */
-  border-radius: 20px; /* すべての角を10ピクセル丸める */
-}
-
-#darkred {
-  background-color: #F9917B; /* 赤色に */
-}
-#background-color {
-  background-color: #FFE7D6;/* 背景色 */
-}
-
-#green {
-  background-color: #98CB9A; /* 緑色に */
-}
-#darkgreen {
-  background-color: #2FA268; /* 緑色に */
-}
-#yelow {
-  background-color: #E69F00; /* 黄色に */
 }
 
 .Footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #B5DFCA; /* フッターの背景色を設定 */
+  background-color: #B5DFCA;
   padding: 10px 0;
-  position: fixed; /* 画面の下部に固定 */
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;

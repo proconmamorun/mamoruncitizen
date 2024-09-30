@@ -1,0 +1,21 @@
+/* src/app/safety/where/check/checkpage.module.css */
+.App {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 中央揃え */
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+  text-align: center;
+  transition: opacity 0.5s ease-in-out; /* フェードアウトの時間を0.5秒に変更 */
+}
+
+.fadeOut {
+  opacity: 0; /* フェードアウト時に透明にする */
+}
+
+.safetypageTitle {
+  font-size: 50px;
+  color: #52514D;
+}

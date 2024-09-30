@@ -1,0 +1,45 @@
+/* src/app/danger/preview/preview.module.css */
+.App {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    padding-top: 20px; /* 全体を下に少し移動 */
+  }
+  
+  .previewContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px; /* ボタンやプレビュー全体をさらに下に配置 */
+  }
+  
+  .cameraPreview {
+    background-color: #D9D9D9;
+    height: 460px;
+    width: 310px;
+    margin: 20px auto;
+  }
+  
+  .mainButtonDanger {
+    width: 310px;
+    height: 75px;
+    border-radius: 30px;
+    font-size: 35px;
+    margin: 10px 0;
+    cursor: pointer;
+    color: white;
+    border: none;
+  }
+  
+  .darkred {
+    background-color: #2FA268;
+  }
+  
+  .green {
+    background-color: #E69F00;
+  }
+  

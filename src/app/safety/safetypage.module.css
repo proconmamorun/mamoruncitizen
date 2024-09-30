@@ -1,0 +1,46 @@
+/* src/app/safety/safetypage.module.css */
+.App {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 縦方向に中央揃え */
+  align-items: center; /* 横方向の中央揃え */
+  height: 100vh; /* 画面全体を占める */
+  margin-bottom: 10px; /* 全体を10px上に移動 */
+}
+
+.safetypageTitle {
+  font-size: 40px;
+  margin-bottom: 40px; /* タイトルとボタンの間に余白を追加 */
+  color: #52514D;
+  text-align: center;
+}
+
+.safetybuttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* ボタン間のスペース */
+  align-items: center; /* ボタンを横方向に中央揃え */
+}
+
+.safetybuttonButton {
+  font-size: 40px;
+  padding: 10px 20px;
+  width: 350px;
+  height: 125px;
+  border-radius: 30px;
+  border: 5px solid;
+  cursor: pointer;
+}
+
+.yellow {
+  border-color: #E69F00;
+  color: #E69F00;
+  background-color: #ffffff;
+}
+
+.darkgreen {
+  border-color: #2FA268;
+  color: #2FA268;
+  background-color: #ffffff;
+}

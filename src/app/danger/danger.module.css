@@ -1,0 +1,95 @@
+/* src/app/danger/danger.module.css */
+.App {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    padding: 10px;
+    color: black;
+  }
+  
+  .headerTitle {
+    font-size: 35px;
+    margin: 0 auto;
+  }
+  
+  .backButton {
+    background-color: #4D4D4D;
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    left: 10px;
+  }
+  
+  .backButton img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .alertMessage {
+    color: #D4A049;
+    font-size: 30px;
+    font-weight: bold;
+    margin: 10px 0;
+    text-align: center;
+  }
+  
+  .cameraPreview {
+    background-color: #D9D9D9;
+    height: 460px;
+    width: 310px;
+    margin: 20px auto;
+  }
+  
+  .cameraContainer {
+    background-color: #52514D;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+  
+  .captureButton {
+    background-color: #4d4d4d;
+    border-radius: 50%;
+    width: 85px;
+    height: 85px;
+    position: relative;
+    border: 8px solid white;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .captureButton::before {
+    content: "";
+    background-color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    position: absolute;
+  }
+  
