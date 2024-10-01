@@ -4,6 +4,10 @@ import React from 'react';
 import styles from './safetypage.module.css';
 import { useRouter } from 'next/navigation';
 
+function uploadSafety(isSafe:boolean){
+  
+}
+
 export default function Safety() {
   const router = useRouter();
 

@@ -1,21 +1,24 @@
-// src/app/evacuation/page.tsx
 'use client';
 import React, { useEffect } from 'react';
 import styles from './evacuationpage.module.css';
+import detectRotationAndUpload from './RotationDetector';
 
 export default function Evacuation() {
   useEffect(() => {
     // ページロード時にフッターを非表示にする
-    const footerElement = document.querySelector('.Footer');
+    const footerElement = document.querySelector('.Footer') as HTMLElement;
     if (footerElement) {
       footerElement.style.display = 'none';
     }
+
+    const cancelDetectLocation = detectRotationAndUpload();
 
     // ページ離脱時にフッターを再表示する
     return () => {
       if (footerElement) {
         footerElement.style.display = 'flex';
       }
+      cancelDetectLocation();
     };
   }, []);
 
