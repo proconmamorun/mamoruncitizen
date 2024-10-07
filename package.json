@@ -10,7 +10,9 @@
     "bstart": "npm run build && npm run start"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.19.3",
     "@types/react-router-dom": "^5.3.3",
+    "axios": "^1.7.7",
     "firebase": "^10.13.2",
     "next": "14.2.6",
     "react": "^18",
