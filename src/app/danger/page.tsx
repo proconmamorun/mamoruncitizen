@@ -17,11 +17,6 @@ export default function Danger() {
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
-        // フッターをDOMから非表示にする
-        const footerElement = document.querySelector('.Footer');
-        if (footerElement) {
-          footerElement.style.display = 'none';
-        }
       } catch (err) {
         console.error('カメラのアクセスに失敗しました:', err);
       }
@@ -34,11 +29,6 @@ export default function Danger() {
         const stream = videoRef.current.srcObject;
         const tracks = stream.getTracks();
         tracks.forEach((track) => track.stop());
-      }
-      // フッターを再表示する
-      const footerElement = document.querySelector('.Footer');
-      if (footerElement) {
-        footerElement.style.display = 'flex';
       }
     };
   }, []);

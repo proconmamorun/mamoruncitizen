@@ -1,14 +1,30 @@
 'use client';
-import React, { useEffect } from 'react';
+
 import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import styles from './evacuationpage.module.css';
+import detectRotationAndUpload from './RotationDetector';
+
+const containerStyle = {
+  width: '100%',
+  height: '400px',  // マップの高さを適切に調整
+};
+
+const center = {
+  lat: 35.682839,  // 東京の緯度
+  lng: 139.759455, // 東京の経度
+};
 
 export default function Evacuation() {
   const router = useRouter();
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "", // APIキーを環境変数から取得
+  });
 
   useEffect(() => {
-    // フッターを非表示に設定
-    const footerElement = document.querySelector('.Footer');
+    // ページロード時にフッターを非表示にする
+    const footerElement = document.querySelector('.Footer') as HTMLElement;
     if (footerElement) {
       footerElement.style.display = 'none'; // 避難ページでは非表示
     }
@@ -22,8 +38,7 @@ export default function Evacuation() {
       bottomImageElement.style.width = '100%';
       bottomImageElement.style.zIndex = '15';
     }
-
-    // ページ離脱時に元のスタイルに戻す
+    const cancelDetectLocation = detectRotationAndUpload();
     return () => {
       if (footerElement) {
         footerElement.style.display = 'flex'; // 他のページに戻ったら表示
@@ -35,19 +50,32 @@ export default function Evacuation() {
         bottomImageElement.style.width = '';
         bottomImageElement.style.zIndex = '';
       }
+      cancelDetectLocation();
     };
   }, []);
 
   const handleEndClick = () => {
     router.push('/evacuation/evacuation-done');
   };
+  if (loadError) {
+    return <div>マップの読み込み中にエラーが発生しました。</div>;
+  }
+
+  if (!isLoaded) {
+    return <div>マップを読み込んでいます...</div>;
+  }
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>避難する</div>
       
       <div className={styles.mapPlaceholder}>
-        <img src="/images/map-picture.png" alt="Map" className={styles.mapImage} />
+        {/* Google Maps コンポーネント */}
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
+          zoom={12}
+        />
         
         <div className={styles.icon} style={{ top: "23%", right: "5%" }}>
           <img src="/images/sound-icon.png" alt="Sound" />
