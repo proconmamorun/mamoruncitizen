@@ -7,16 +7,17 @@
 }
 
 .header {
-  background-color: #ffffff; /* 背景色を白に変更 */
-  padding: 15px 0; /* 元の10pxから5px増やして高さを調整 */
+  background-color: #ffffff;
+  padding: 40px 0;
   text-align: center;
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 40px;
+  font-weight: normal;
   color: #52514d;
+  margin-top: 20px;
 }
 
 .map-placeholder {
-  position: relative; /* relativeにすることでマップ画像内にアイコンを絶対配置 */
+  position: relative;
   flex: 1;
   width: 100%;
   display: flex;
@@ -25,12 +26,12 @@
 }
 
 .mapImage {
-  width: 100%; /* マップ画像の幅を100%に設定 */
+  width: 100%;
   height: auto;
 }
 
 .icon {
-  position: fixed; /* 固定位置にアイコンを配置 */
+  position: fixed;
   width: 50px;
   height: 50px;
   background-color: #d9d9d9;
@@ -38,49 +39,67 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10; /* アイコンが上に表示されるようにする */
+  z-index: 10;
 }
 
 .icon img {
-  width: 70%; /* アイコン画像のサイズを調整 */
+  width: 70%;
   height: 70%;
 }
 
 .footer {
-  background-color: #52514d;
-  padding: 20px;
+  background-color: #7d7d7d;
+  padding: 0 20px; /* 上下のパディングを0にして上ギリギリに配置 */
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  height: calc(1.75 * 60px); /* 高さを1.75倍に設定 */
+  height: 200px; /* フッターの高さを200pxに増加 */
+  border-radius: 25px 25px 0 0;
 }
 
 .footer .time {
   color: white;
-  font-size: 24px;
+  font-size: 40px;
+  font-weight: bold;
+  margin-top: 20px; /* 要素を少し下に配置 */
 }
 
 .footer .distance {
   color: white;
-  font-size: 16px;
+  font-size: 20px;
+  margin-top: 10px; /* 要素を少し下に配置 */
 }
 
-.footer .end-button {
-  background-color: #e69f00 !important;
-  color: white !important;
-  padding: 10px 20px;
-  border-radius: 50%;
-  font-size: 20px;
+.endButton {
+  background-color: #E69F00; /* 黄色の背景 */
+  color: white;
+  padding: 10px 30px; /* 横長にするために左右のパディングを増やす */
+  border-radius: 50px; /* 横長の丸みを帯びた形にする */
+  font-size: 30px;
   border: none;
   cursor: pointer;
-  width: 75px;
-  height: 75px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-right: 10px;
+  margin-top: 40px; /* ボタンを少し下に配置 */
+}
+
+.BottomImage {
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+  animation: slideHorizontal 10s linear infinite;
+}
+
+.BottomImage-fixed {
+  bottom: 0 !important; /* 常に画面の一番下に表示 */
+}
+
+.overrideBottomImage {
+  bottom: 0 !important; /* ページに関係なく、画面の一番下に固定 */
 }

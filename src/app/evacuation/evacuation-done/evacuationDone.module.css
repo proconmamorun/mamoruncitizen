@@ -1,0 +1,56 @@
+/* CSS部分 */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center; /* テキストを中央揃え */
+}
+
+.message {
+  font-size: 36px;
+  margin-bottom: 0px; /* マージンを完全にゼロに */
+  padding: 0; /* パディングをゼロに */
+  line-height: 1; /* 行間を詰める */
+}
+
+.firstMessage {
+  font-size: 36px;
+  margin-bottom: 0px;
+  padding: 0;
+  line-height: 1;
+  margin-top: 10px; /* 他のテキストから上にスペースを追加 */
+}
+
+.secondMessage {
+  font-size: 36px;
+  margin-bottom: 0px;
+  padding: 0;
+  line-height: 1;
+  margin-top:20px; /* 他のテキストから少し上にスペースを追加 */
+}
+
+.important {
+  font-size: 36px;
+  color: #E69F00; /* オレンジ色の強調 */
+  font-weight: bold;
+}
+
+.button {
+  padding: 10px 30px;
+  font-size: 40px;
+  background-color: #2FA268; /* 緑色 */
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 30px;
+  width: 350px; /* 幅を調整 */
+  height: 150px;
+  text-align: center; /* ボタン内のテキストを中央揃え */
+  margin-top: 10px;
+}
+
+.button:hover {
+  background-color: #218552;
+}

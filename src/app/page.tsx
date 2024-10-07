@@ -1,32 +1,48 @@
-// src/app/page.tsx
 'use client';
 import React from 'react';
-import styles from './Mainpage.module.css';
+import './home.css';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const router = useRouter();
 
   return (
-    <div className={styles.App}>
-      <div className={styles.homeMainbuttonContainer}>
+    <div className={"main"}>
+      <div className={"homeMainbuttonContainer"}>
+        {/* 安否確認のボタン */}
         <button
-          className={`${styles.homeMainbuttonButton} ${styles.darkgreen}`}
+          className={"imageButton"}
           onClick={() => router.push('/safety')}
         >
-          安否確認
+          <img 
+            src="/images/safety-know.png" 
+            alt="安否確認" 
+            className={"buttonImage"}
+          />
         </button>
+
+        {/* 避難誘導のボタン */}
         <button
-          className={`${styles.homeMainbuttonButton} ${styles.orange}`}
+          className={"imageButton"}
           onClick={() => router.push('/evacuation')}
         >
-          避難誘導
+          <img 
+            src="/images/danger-evacuation.png" 
+            alt="避難誘導" 
+            className={"buttonImage"}
+          />
         </button>
+
+        {/* 危険箇所共有のボタン */}
         <button
-          className={`${styles.homeMainbuttonButton} ${styles.green}`}
+          className={"imageButton"}
           onClick={() => router.push('/danger')}
         >
-          危険箇所共有
+          <img 
+            src="/images/danger-share.png" 
+            alt="危険箇所共有" 
+            className={"buttonImage"}
+          />
         </button>
       </div>
     </div>
