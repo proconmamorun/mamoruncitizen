@@ -1,5 +1,6 @@
 // src/app/danger/page.tsx
-'use client';
+"use client";
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './danger.module.css';

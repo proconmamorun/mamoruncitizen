@@ -14,14 +14,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const pageClass = pathname === '/evacuation' ? 'evacuationPage' : '';
+
+  // Footerを非表示にしたいパスのリスト
+  const hideFooterPaths = ['/evacuation', '/danger'];
+
+  // Obiを非表示にしたいパスのリスト
+  const hideObiPaths = ['/evacuation', '/danger'];
+
+  // 現在のパスが非表示リストに含まれているかを確認する関数
+  const shouldHideFooter = hideFooterPaths.some(path => pathname.startsWith(path));
+  const shouldHideObi = hideObiPaths.some(path => pathname.startsWith(path));
 
   return (
-    <html lang="en">
-      <body className={`${inter.className} ${pageClass}`}>
+    <html lang="ja">
+      <body className={inter.className}>
         {children}
-        <Obi />
-        {pathname !== '/evacuation' && <Footer />} 
+        {/* Obi を非表示にしたいパスでない場合に表示 */}
+        {!shouldHideObi && <Obi />}
+        {/* Footer を非表示にしたいパスでない場合に表示 */}
+        {!shouldHideFooter && <Footer />} 
       </body>
     </html>
   );
