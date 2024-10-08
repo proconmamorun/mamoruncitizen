@@ -1,4 +1,3 @@
-// src/app/danger/page.tsx
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -6,9 +5,9 @@ import { useRouter } from 'next/navigation';
 import styles from './danger.module.css';
 
 export default function Danger() {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -16,7 +15,7 @@ export default function Danger() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         if (videoRef.current) {
-          videoRef.current.srcObject = stream;
+          (videoRef.current as HTMLVideoElement).srcObject = stream;
         }
       } catch (err) {
         console.error('カメラのアクセスに失敗しました:', err);
@@ -27,9 +26,9 @@ export default function Danger() {
 
     return () => {
       if (videoRef.current && videoRef.current.srcObject) {
-        const stream = videoRef.current.srcObject;
+        const stream = videoRef.current.srcObject as MediaStream;
         const tracks = stream.getTracks();
-        tracks.forEach((track) => track.stop());
+        tracks.forEach((track: MediaStreamTrack) => track.stop());
       }
     };
   }, []);
@@ -37,7 +36,17 @@ export default function Danger() {
   const capturePhoto = () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
+    
+    if (!video || !canvas) {
+      console.error("Video or canvas is not available.");
+      return;
+    }
+
     const context = canvas.getContext('2d');
+    if (!context) {
+      console.error("Canvas context is not available.");
+      return;
+    }
 
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
