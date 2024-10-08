@@ -1,49 +1,52 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import './home.css';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const router = useRouter();
 
+  // クリーンアップ処理を行うuseEffect
+  useEffect(() => {
+    return () => {
+      // コンポーネントのアンマウント時のクリーンアップ処理
+      console.log("Home component unmounted, performing cleanup if necessary");
+    };
+  }, []);
+
+  // 非同期でページ遷移を行う関数
+  const handleNavigation = async (url: string) => {
+    try {
+      await router.push(url);
+      console.log(`${url}へ遷移しました`);
+    } catch (error) {
+      console.error(`遷移中にエラーが発生しました: ${error}`);
+    }
+  };
+
+  // ボタンリストのデータ
+  const buttons = [
+    { url: '/safety', imageSrc: '/images/safety-know.png', alt: '安否確認' },
+    { url: '/evacuation', imageSrc: '/images/danger-evacuation.png', alt: '避難誘導' },
+    { url: '/danger', imageSrc: '/images/danger-share.png', alt: '危険箇所共有' }
+  ];
+
   return (
     <div className={"main"}>
       <div className={"homeMainbuttonContainer"}>
-        {/* 安否確認のボタン */}
-        <button
-          className={"imageButton"}
-          onClick={() => router.push('/safety')}
-        >
-          <img 
-            src="/images/safety-know.png" 
-            alt="安否確認" 
-            className={"buttonImage"}
-          />
-        </button>
-
-        {/* 避難誘導のボタン */}
-        <button
-          className={"imageButton"}
-          onClick={() => router.push('/evacuation')}
-        >
-          <img 
-            src="/images/danger-evacuation.png" 
-            alt="避難誘導" 
-            className={"buttonImage"}
-          />
-        </button>
-
-        {/* 危険箇所共有のボタン */}
-        <button
-          className={"imageButton"}
-          onClick={() => router.push('/danger')}
-        >
-          <img 
-            src="/images/danger-share.png" 
-            alt="危険箇所共有" 
-            className={"buttonImage"}
-          />
-        </button>
+        {buttons.map((button, index) => (
+          <button
+            key={index} // keyを追加して重複を防ぐ
+            className={"imageButton"}
+            onClick={() => handleNavigation(button.url)}
+          >
+            <img 
+              src={button.imageSrc} 
+              alt={button.alt} 
+              className={"buttonImage"}
+            />
+          </button>
+        ))}
       </div>
     </div>
   );

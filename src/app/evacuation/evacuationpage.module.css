@@ -103,3 +103,7 @@
 .overrideBottomImage {
   bottom: 0 !important; /* ページに関係なく、画面の一番下に固定 */
 }
+
+.footer {
+  display: none; /* 必要に応じてこの行を追加して非表示に */
+}

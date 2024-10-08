@@ -22,38 +22,6 @@ export default function Evacuation() {
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "", // APIキーを環境変数から取得
   });
 
-  useEffect(() => {
-    // ページロード時にフッターを非表示にする
-    const footerElement = document.querySelector('.Footer') as HTMLElement;
-    if (footerElement) {
-      footerElement.style.display = 'none'; // 避難ページでは非表示
-    }
-
-    // 下側の帯の位置を画面の一番下に設定
-    const bottomImageElement = document.querySelector('.imageSliderBottom');
-    if (bottomImageElement) {
-      bottomImageElement.style.position = 'fixed';
-      bottomImageElement.style.bottom = '0';
-      bottomImageElement.style.left = '0';
-      bottomImageElement.style.width = '100%';
-      bottomImageElement.style.zIndex = '15';
-    }
-    const cancelDetectLocation = detectRotationAndUpload();
-    return () => {
-      if (footerElement) {
-        footerElement.style.display = 'flex'; // 他のページに戻ったら表示
-      }
-      if (bottomImageElement) {
-        bottomImageElement.style.position = '';
-        bottomImageElement.style.bottom = '90px'; // デフォルト位置に戻す
-        bottomImageElement.style.left = '';
-        bottomImageElement.style.width = '';
-        bottomImageElement.style.zIndex = '';
-      }
-      cancelDetectLocation();
-    };
-  }, []);
-
   const handleEndClick = () => {
     router.push('/evacuation/evacuation-done');
   };

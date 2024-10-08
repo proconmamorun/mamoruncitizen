@@ -1,18 +1,18 @@
-/* CSS部分 */
 .container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  text-align: center; /* テキストを中央揃え */
+  text-align: center;
+  position: relative; /* デフォルトの位置指定 */
 }
 
 .message {
   font-size: 36px;
-  margin-bottom: 0px; /* マージンを完全にゼロに */
-  padding: 0; /* パディングをゼロに */
-  line-height: 1; /* 行間を詰める */
+  margin-bottom: 0px;
+  padding: 0;
+  line-height: 1;
 }
 
 .firstMessage {
@@ -20,7 +20,7 @@
   margin-bottom: 0px;
   padding: 0;
   line-height: 1;
-  margin-top: 10px; /* 他のテキストから上にスペースを追加 */
+  margin-top: 10px;
 }
 
 .secondMessage {
@@ -28,26 +28,26 @@
   margin-bottom: 0px;
   padding: 0;
   line-height: 1;
-  margin-top:20px; /* 他のテキストから少し上にスペースを追加 */
+  margin-top: 20px;
 }
 
 .important {
   font-size: 36px;
-  color: #E69F00; /* オレンジ色の強調 */
+  color: #E69F00;
   font-weight: bold;
 }
 
 .button {
   padding: 10px 30px;
   font-size: 40px;
-  background-color: #2FA268; /* 緑色 */
+  background-color: #2FA268;
   border: none;
   color: white;
   cursor: pointer;
   border-radius: 30px;
-  width: 350px; /* 幅を調整 */
+  width: 350px;
   height: 150px;
-  text-align: center; /* ボタン内のテキストを中央揃え */
+  text-align: center;
   margin-top: 10px;
 }
 

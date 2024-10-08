@@ -1,0 +1,36 @@
+/* トップとボトムの画像を表示するためのスライダー */
+.imageSlider, .imageSliderBottom {
+    position: fixed;
+    left: 0;
+    display: flex;
+    width: 360%; /* 各画像が120%のサイズで3枚並ぶように360%に設定 */
+    animation: slideHorizontal 10s linear infinite; /* 同じ速度でスライド */
+}
+
+.imageSlider {
+    top: 0;
+}
+
+.imageSliderBottom {
+    bottom: 90px; /* デフォルトの位置 */
+}
+
+/* 横にスライドさせるアニメーション */
+@keyframes slideHorizontal {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-33.33%); /* 360%の3分の1である33.33%をスライド */
+    }
+}
+
+.sliderImage {
+    width: 120vw; /* 各画像の幅を画面の120%に設定 */
+    height: auto;
+}
+
+/* 避難ページでのスタイル上書き */
+.evacuationPage .imageSliderBottom {
+    bottom: 0 !important; /* 避難ページでのみ最下部に配置 */
+}

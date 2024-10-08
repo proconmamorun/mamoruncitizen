@@ -1,80 +1,19 @@
 .Footer-button {
     width: 50px;
     height: 50px;
-    margin: 10px 20px; /* 上下に10ピクセル、左右に20ピクセルの間隔 */
+    margin: 10px 20px;
+    object-fit: contain; /* 画像が領域に収まるようにする */
+    display: block; /* 確実に表示されるように */
 }
+
 
 .Footer {
     display: flex;
-    position: fixed;/*←絶対位置*/
-    bottom: 0; /*下に固定*/
-    width: 100%;      /* フッターの幅を画面いっぱいに設定 */
+    position: fixed; /* 絶対位置 */
+    bottom: 0; /* 下に固定 */
+    width: 100%; /* フッターの幅を画面いっぱいに設定 */
     background-color: #B5DFCA; /* フッターの背景色を設定 */
     justify-content: center; /* アイテムを中央に寄せる */
-    padding: 10px 0;  /* 上下のパディングを10ピクセルに設定 */
-  }
-  
-
-
-/* トップの画像 */
-.TopImage {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%; /* 画面の幅いっぱいに広げる */
-    z-index: 10; /* 他のコンテンツの上に表示されるように */
-    animation: slideHorizontal 20s linear infinite; /* 20秒かけてスライド */
-}
-
-/* CSS (Footer.css) */
-.BottomImage {
-    position: fixed;
-    width: 100%;
-    z-index: 10;
-    animation: slideHorizontal 10s linear infinite;
-  }
-  
-  /* BottomImageの位置をページごとに変更 */
-  .BottomImage.overridePosition {
-    bottom: 0 !important; /* 画面の一番下に固定 */
-  }
-  
-
-/* Footer.css */
-
-/* トップとボトムの画像を表示するためのスライダー */
-.imageSlider, .imageSliderBottom {
-    position: fixed;
-    left: 0;
-    display: flex;
-    width: 360%; /* 各画像が120%のサイズで3枚並ぶように360%に設定 */
-    animation: slideHorizontal 10s linear infinite; /* 同じ速度でスライド */
-}
-
-.imageSlider {
-    top: 0;
-}
-
-.imageSliderBottom {
-    bottom: 90px; /* デフォルトの位置 */
-}
-
-/* 避難ページでのスタイル上書き */
-.evacuationPage .imageSliderBottom {
-    bottom: 0 !important; /* 避難ページでのみ最下部に配置 */
-}
-
-/* 横にスライドさせるアニメーション */
-@keyframes slideHorizontal {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-33.33%); /* 360%の3分の1である33.33%をスライド */
-    }
-}
-
-.sliderImage {
-    width: 120vw;
-    height: auto;
+    padding: 10px 0; /* 上下のパディングを10ピクセルに設定 */
+    z-index: 10; /* 他の要素の上に表示されるように */
 }
