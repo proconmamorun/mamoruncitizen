@@ -1,18 +1,26 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import React, { useState, useEffect, useCallback } from 'react';
+import { GoogleMap, Marker, Polyline, useJsApiLoader } from '@react-google-maps/api';
 import styles from './evacuationpage.module.css';
+import { GetSafePedestrianRoute } from '@/services/routeService';
+import { Point } from '@/services/firebaseService';
 
 const containerStyle = {
   width: '100%',
   height: '100vh',  // 画面の縦幅いっぱいに設定
 };
 
-const center = {
+const defaultCenter = {
   lat: 35.682839,  // 東京の緯度
   lng: 139.759455, // 東京の経度
+};
+
+// 固定のエンドポイント
+const fixedEndPoint = {
+  lat: 33.973618,  // 固定の緯度
+  lng: 134.367512, // 固定の経度
 };
 
 // Google Maps オプション
@@ -20,7 +28,7 @@ const options = {
   fullscreenControl: false,  // フルスクリーンボタンを非表示
   mapTypeControl: false,  // マップタイプ切り替えボタンを非表示
   streetViewControl: false,  // ストリートビューを非表示
-  zoomControl: false,  // 拡大縮小ボタンを非表示
+  zoomControl: true,  // 拡大縮小ボタンを表示
   styles: [
     {
       featureType: 'poi',  // ランドマークアイコンを非表示
@@ -36,6 +44,11 @@ export default function Evacuation() {
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "", // APIキーを環境変数から取得
   });
 
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<google.maps.LatLngLiteral | null>(null); // 現在地の管理
+  const [routeData, setRouteData] = useState<{ path: google.maps.LatLngLiteral[]; risks: Point[] }>({ path: [], risks: [] });
+  const [error, setError] = useState<string | null>(null);
+
   const handleEndClick = () => {
     router.push('/evacuation/evacuation-done');
   };
@@ -46,6 +59,58 @@ export default function Evacuation() {
     setMapType(prevType => (prevType === 'roadmap' ? 'satellite' : 'roadmap'));
   };
 
+  // 現在地を取得し、マップの中心を更新する関数
+  useEffect(() => {
+    const getGeolocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            setCurrentLocation({ lat: latitude, lng: longitude }); // 現在地を保存
+          },
+          (error) => {
+            console.error("位置情報の取得に失敗しました", error);
+            setError('位置情報の取得中にエラーが発生しました。');
+          },
+          { enableHighAccuracy: true }
+        );
+      } else {
+        setError('Geolocationがサポートされていません。');
+      }
+    };
+
+    getGeolocation();  // 初期位置取得
+    const locationInterval = setInterval(getGeolocation, 5000);  // 5秒ごとに位置情報を取得
+
+    // コンポーネントのアンマウント時にインターバルをクリア
+    return () => clearInterval(locationInterval);
+  }, []);
+
+  // ルートを取得する非同期関数
+  const fetchSafeRoute = useCallback(
+    async () => {
+      if (currentLocation) {
+        try {
+          const start: [number, number] = [currentLocation.lng, currentLocation.lat];
+          const end: [number, number] = [fixedEndPoint.lng, fixedEndPoint.lat];  // 固定のエンドポイント
+
+          const [routePolyline, risks] = await GetSafePedestrianRoute(start, end);
+          setRouteData({ path: routePolyline, risks });
+        } catch (error) {
+          setError('ルート取得中にエラーが発生しました。');
+        }
+      }
+    },
+    [currentLocation]
+  );
+
+  // 現在地が更新されるたびにルートを取得
+  useEffect(() => {
+    if (currentLocation) {
+      fetchSafeRoute();
+    }
+  }, [currentLocation, fetchSafeRoute]);
+
   if (loadError) {
     return <div>マップの読み込み中にエラーが発生しました。</div>;
   }
@@ -54,26 +119,53 @@ export default function Evacuation() {
     return <div>マップを読み込んでいます...</div>;
   }
 
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>避難する</div>
-      
+
       <div className={styles.mapPlaceholder}>
         {/* Google Maps コンポーネント */}
         <GoogleMap
           mapContainerStyle={containerStyle}
-          center={center}
-          zoom={12}
+          zoom={16}
+          center={currentLocation || defaultCenter}  // 現在地またはデフォルトの東京を中心に表示
           mapTypeId={mapType}  // マップの種類を設定
           options={options}  // カスタムオプションを適用
-        />
-        
-        {/* マップの種類を切り替えるボタン */}
-        <button className={styles.mapToggleButton} onClick={toggleMapType}>
-          {mapType === 'roadmap' ? 'サテライト表示' : 'マップ表示'}
-        </button>
+          onLoad={mapInstance => setMap(mapInstance)}  // マップインスタンスを取得
+        >
+          {/* ルートを表示 */}
+          {routeData.path.length > 0 && (
+            <Polyline path={routeData.path} options={{ strokeColor: '#0000FF', strokeWeight: 5 }} />
+          )}
+
+          {/* 現在地のマーカー */}
+          {currentLocation && (
+            <Marker position={currentLocation} label="Start" />
+          )}
+
+          {/* 固定のエンドポイントのマーカー */}
+          <Marker position={fixedEndPoint} label="End" />
+
+          {/* リスクの表示 */}
+          {routeData.risks.map((risk, index) => (
+            risk.lat && risk.lng && (
+              <Marker
+                key={index}
+                position={{ lat: risk.lat, lng: risk.lng }}
+                label={`Risk ${index + 1}`}
+                icon={{
+                  url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                }}
+              />
+            )
+          ))}
+        </GoogleMap>
       </div>
-      
+
       <div className={styles.footer}>
         <div>
           <div className={styles.time}>30 分</div>

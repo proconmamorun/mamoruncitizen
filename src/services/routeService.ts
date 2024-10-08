@@ -25,7 +25,7 @@ interface Notice {
 }
 
 // Updated HERE API response type to include notices
-interface HereServiceResponse {
+export interface HereServiceResponse {
     routes: {
         sections: {
             polyline: string;  // Route polyline in string format
@@ -65,7 +65,6 @@ const searchRouteForPedestrians = async (
             }
         });
 
-        console.log(response);
         return response.data as HereServiceResponse;
     } catch (error) {
         console.error('Error fetching pedestrian route:', error);
@@ -101,7 +100,7 @@ export async function GetSafePedestrianRoute(
     const risks: Point[] = await fetchLocationData();
     // Get route from HERE API
     let response: HereServiceResponse = await searchRouteForPedestrians(startPoint, endPoint, risks);
-    
+    console.log(response);
     const minTime: number = (await searchRouteForPedestrians(startPoint, endPoint, []) as HereServiceResponse).routes[0].sections[0].summary.duration;
     
     for(let i:number = 1; i < 5 && (isViolated(response) || minTime * 1.2 < response.routes[0].sections[0].summary.duration); i++){
