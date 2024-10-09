@@ -17,10 +17,10 @@ interface UploadResult {
 
 /**
  * EXIF データを取得し、画像を Firebase Storage にアップロードする関数
- * @param file アップロードする画像ファイル
+ * @param imageUrl アップロードする画像のURL
  * @returns 画像のダウンロード URL、座標情報、住所を含むオブジェクト
  */
-export const uploadImageWithExif = async (file: File): Promise<UploadResult> => {
+export const uploadImageWithExif = async (imageUrl: string): Promise<UploadResult> => {
   const getExif = (exifData: any, key: string): any => {
     try {
       return exifData[key];
@@ -56,32 +56,42 @@ export const uploadImageWithExif = async (file: File): Promise<UploadResult> => 
 
   // 画像の EXIF データを取得
   const coordinates: Coordinates | null = await new Promise((resolve, reject) => {
-    EXIF.getData(file, function (this: any) {  // 修正: file そのものを渡す
-      try {
-        const exifData = EXIF.getAllTags(this);
-        const latitude = getGps(exifData, 'Latitude') as number;
-        const longitude = getGps(exifData, 'Longitude') as number;
-        if (latitude && longitude) {
-          resolve({ lat: latitude, lng: longitude });
-        } else {
-          resolve(null); // 座標情報がない場合
-        }
-      } catch (e) {
-        console.error('Error processing EXIF data:', e);
-        reject(e);
-      }
-    });
+    // fetchで画像をBlobとして取得
+    fetch(imageUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        EXIF.getData(blob, function (this: any) {
+          try {
+            const exifData = EXIF.getAllTags(this);
+            const latitude = getGps(exifData, 'Latitude') as number;
+            const longitude = getGps(exifData, 'Longitude') as number;
+            if (latitude && longitude) {
+              resolve({ lat: latitude, lng: longitude });
+            } else {
+              resolve(null); // 座標情報がない場合
+            }
+          } catch (e) {
+            console.error('Error processing EXIF data:', e);
+            reject(e);
+          }
+        });
+      })
+      .catch((error) => {
+        console.error('画像の取得に失敗しました:', error);
+        reject(error);
+      });
   });
 
   // Firebase Storage にアップロード
-  const storageRef = ref(storage, `images/${file.name}`);
-  await uploadBytes(storageRef, file);
-  const imageUrl = await getDownloadURL(storageRef);
+  const storageRef = ref(storage, `images/${imageUrl.split('/').pop()}`);
+  const imageBlob = await fetch(imageUrl).then((res) => res.blob());
+  await uploadBytes(storageRef, imageBlob);
+  const downloadUrl = await getDownloadURL(storageRef);
 
   // Firestore に画像情報を保存
   await addDoc(collection(db, 'images'), {
-    name: file.name,
-    url: imageUrl,
+    name: imageUrl.split('/').pop(),
+    url: downloadUrl,
   });
 
   // Google Maps API を使用して住所を取得
@@ -93,7 +103,7 @@ export const uploadImageWithExif = async (file: File): Promise<UploadResult> => 
     });
 
     try {
-      const google = await loader.load(); // 非推奨ではない方法で Google Maps API をロード
+      const google = await loader.load();
       const geocoder = new google.maps.Geocoder();
       const results = await geocodeLocation(geocoder, coordinates);
 
@@ -107,7 +117,7 @@ export const uploadImageWithExif = async (file: File): Promise<UploadResult> => 
     }
   }
 
-  return { imageUrl, coordinates, address };
+  return { imageUrl: downloadUrl, coordinates, address };
 };
 
 // Geocoding 処理を Promise でラップ
