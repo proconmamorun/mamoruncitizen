@@ -1,29 +1,64 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Obi.css";
 
 export function Obi() {
-    const [images, setImages] = useState(["./images/obi.png", "./images/obi.png", "./images/obi.png"]);
+    const message = "土砂崩れに注意してください";
+    const [messages, setMessages] = useState([message, message, message]);
+    const sliderRef = useRef(null);  // スライダーのDOM参照用
+    const lastItemRef = useRef(null); // 最後のアイテムを参照
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setImages(prevImages => [...prevImages.slice(1), prevImages[0]]);
-        }, 10000); // 10秒ごとに画像を更新
+        // Intersection Observer を設定して、最後の帯が画面に入ったら新しいメッセージを追加
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    // 新しいメッセージを追加し、古いメッセージを削除して無限にスライド
+                    setMessages((prevMessages) => {
+                        const newMessage = `新しい警告: ${Math.random()}`;  // 動的に新しいメッセージを生成
+                        const updatedMessages = [...prevMessages.slice(1), newMessage];
+                        return updatedMessages;
+                    });
+                }
+            },
+            { root: null, threshold: 1.0 } // 3枚目が完全に表示されたら発火
+        );
 
-        return () => clearInterval(interval); // コンポーネントがアンマウントされたときにインターバルをクリア
-    }, []);
+        if (lastItemRef.current) {
+            observer.observe(lastItemRef.current);
+        }
+
+        return () => {
+            if (lastItemRef.current) {
+                observer.unobserve(lastItemRef.current);
+            }
+        };
+    }, [messages]);
 
     return (
         <>
-            <div className="imageSlider">
-                {images.map((src, index) => (
-                    <img key={index} className="sliderImage" src={src} alt="スライド画像" />
+            <div className="textSlider" ref={sliderRef}>
+                {messages.map((msg, index) => (
+                    <div
+                        key={index}
+                        className="sliderTextWithIcon"
+                        ref={index === messages.length - 1 ? lastItemRef : null} // 最後のアイテムを監視
+                    >
+                        {/* 左側に矢印アイコンを追加 */}
+                        <img src="/images/obi-arrow.png" alt="矢印" className="arrowIcon" />
+                        <img src="/images/warning.png" alt="警告" className="warningIcon" />
+                        {msg}
+                    </div>
                 ))}
             </div>
 
-            <div className="imageSliderBottom">
-                {images.map((src, index) => (
-                    <img key={index} className="sliderImage" src={src} alt="スライド画像" />
+            <div className="textSliderBottom">
+                {messages.map((msg, index) => (
+                    <div key={index} className="sliderTextWithIcon">
+                        <img src="/images/obi-arrow.png" alt="矢印" className="arrowIcon" />
+                        <img src="/images/warning.png" alt="警告" className="warningIcon" />
+                        {msg}
+                    </div>
                 ))}
             </div>
         </>

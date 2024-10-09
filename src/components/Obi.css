@@ -1,36 +1,60 @@
-/* トップとボトムの画像を表示するためのスライダー */
-.imageSlider, .imageSliderBottom {
+/* トップとボトムのテキストを表示するためのスライダー */
+.textSlider, .textSliderBottom {
     position: fixed;
     left: 0;
     display: flex;
-    width: 360%; /* 各画像が120%のサイズで3枚並ぶように360%に設定 */
-    animation: slideHorizontal 10s linear infinite; /* 同じ速度でスライド */
+    width: 360%; /* 3つのテキストが並ぶように設定から4つ分に拡張 */
+    animation: slideHorizontal 20s linear infinite; /* 20秒間でスライドし続ける */
+    white-space: nowrap; /* テキストを一行で表示 */
+    align-items: center;
+    justify-content: flex-start; /* 最初の帯を左側からスタートさせる */
+    background-color: #E69F00; /* 帯の背景色を #E69F00 に設定 */
+    height: 60px;
+    z-index: 100; /* 他の要素より前に表示 */
+    color: #ffffff; /* テキストの色を白に設定 */
+    font-size: 24px; /* フォントサイズを大きく変更 */
+    font-weight: bold;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; /* 黒い枠線の追加 */
 }
 
-.imageSlider {
+/* テキストと警告アイコンを横並びにする */
+.sliderTextWithIcon {
+    display: flex;
+    align-items: center;
+    width: 33%; /* 各テキスト要素がスライダー内で均等に並ぶように設定 */
+}
+
+.arrowIcon {
+    width: 56px; /* 矢印アイコンの大きさを大きくする */
+    height: 56px;
+    margin-right: 5px; /* アイコンとテキストの間隔 */
+}
+
+.warningIcon {
+    width: 30px; /* 警告アイコンの大きさ */
+    height: 30px;
+    margin-right: 10px; /* テキストとの間隔 */
+}
+
+/* テキストが左にスライドするアニメーション */
+@keyframes slideHorizontal {
+    0% {
+        transform: translateX(0); /* 画面の左側から表示を開始 */
+    }
+    100% {
+        transform: translateX(-100%); /* 左にスライドして画面外に消える */
+    }
+}
+
+.textSlider {
     top: 0;
 }
 
-.imageSliderBottom {
+.textSliderBottom {
     bottom: 90px; /* デフォルトの位置 */
 }
 
-/* 横にスライドさせるアニメーション */
-@keyframes slideHorizontal {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-33.33%); /* 360%の3分の1である33.33%をスライド */
-    }
-}
-
-.sliderImage {
-    width: 120vw; /* 各画像の幅を画面の120%に設定 */
-    height: auto;
-}
-
 /* 避難ページでのスタイル上書き */
-.evacuationPage .imageSliderBottom {
+.evacuationPage .textSliderBottom {
     bottom: 0 !important; /* 避難ページでのみ最下部に配置 */
 }

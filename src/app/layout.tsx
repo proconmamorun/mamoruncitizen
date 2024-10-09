@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { Footer } from '../components/footer'; // フッターのインポート確認
+import { Footer } from '../components/footer';
 import { Obi } from '../components/Obi';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -19,20 +19,22 @@ export default function RootLayout({
   const hideFooterPaths = ['/evacuation', '/danger'];
 
   // Obiを非表示にしたいパスのリスト
-  const hideObiPaths = ['/evacuation', '/danger'];
+  const hideObiPaths = ['/danger'];
 
-  // 現在のパスが非表示リストに含まれているかを確認する関数
-  const shouldHideFooter = hideFooterPaths.some(path => pathname.startsWith(path));
-  const shouldHideObi = hideObiPaths.some(path => pathname.startsWith(path));
+  // 避難するページでは帯を画面の一番下に固定する
+  const isEvacuationPage = pathname === '/evacuation';
+
+  const shouldHideFooter = hideFooterPaths.includes(pathname);
+  const shouldHideObi = hideObiPaths.includes(pathname) && pathname !== '/danger/preview';
 
   return (
     <html lang="ja">
       <body className={inter.className}>
         {children}
-        {/* Obi を非表示にしたいパスでない場合に表示 */}
-        {!shouldHideObi && <Obi />}
+        {/* Obi を非表示にしたいパスでない場合に表示し、避難するページでは帯を下に固定 */}
+        {!shouldHideObi && <Obi className={isEvacuationPage ? 'fixed-bottom' : ''} />}
         {/* Footer を非表示にしたいパスでない場合に表示 */}
-        {!shouldHideFooter && <Footer />} 
+        {!shouldHideFooter && <Footer />}
       </body>
     </html>
   );
