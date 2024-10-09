@@ -1,4 +1,3 @@
-// src/app/danger/preview/page.tsx
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -6,7 +5,7 @@ import styles from './preview.module.css';
 
 export default function Preview() {
   const router = useRouter();
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);  // 型を string | null に修正
 
   useEffect(() => {
     // ローカルストレージから撮影した画像を取得
