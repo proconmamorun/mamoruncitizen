@@ -1,6 +1,7 @@
 // src/firebaseConfig.ts
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 // Firebaseの設定情報をFirebaseコンソールから取得してください。
 const firebaseConfig = {
@@ -18,3 +19,4 @@ const app = initializeApp(firebaseConfig);
 
 // Firestoreのインスタンスを作成
 export const db = getFirestore(app);
+export const storage = getStorage(app);

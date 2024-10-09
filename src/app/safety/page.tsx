@@ -1,13 +1,52 @@
-// src/app/safety/page.tsx
 'use client';
 import React from 'react';
 import styles from './safetypage.module.css';
 import { useRouter } from 'next/navigation';
-import {db} from "../../services/FirebaseConfig"
+import { db } from "../../services/FirebaseConfig";
 import { addDoc, collection } from 'firebase/firestore';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
-function uploadSafety(isSafe: boolean, router: AppRouterInstance) {
+// 環境変数からGoogle APIキーを取得
+const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+
+// Google Geolocation APIを使って現在位置を取得
+async function getGeolocationFromGoogleAPI() {
+  try {
+    const response = await fetch(`https://www.googleapis.com/geolocation/v1/geolocate?key=${GOOGLE_API_KEY}`, {
+      method: 'POST',
+    });
+
+    if (!response.ok) {
+      throw new Error('Google Geolocation API request failed');
+    }
+
+    const data = await response.json();
+    const { lat, lng } = data.location;
+    return { latitude: lat, longitude: lng };
+  } catch (error) {
+    console.error('Google Geolocation API failed:', error);
+    throw error; // エラーハンドリングのために再スロー
+  }
+}
+
+// 位置情報を保存する共通関数
+async function saveLocationData(latitude: number, longitude: number, isSafe: boolean, router: AppRouterInstance) {
+  try {
+    await addDoc(collection(db, 'citizen'), {
+      latitude: latitude,
+      longitude: longitude,
+      safety: isSafe,
+    });
+
+    // 成功したら次のページに遷移
+    router.push('/safety/where/check');
+  } catch (error) {
+    console.error('データの保存に失敗しました:', error);
+  }
+}
+
+// 位置情報を取得するメインの関数
+async function fetchLocation(isSafe: boolean, router: AppRouterInstance) {
   if (navigator.geolocation) {
     const options = {
       enableHighAccuracy: true,
@@ -20,32 +59,17 @@ function uploadSafety(isSafe: boolean, router: AppRouterInstance) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
 
-        try {
-          await addDoc(collection(db, 'citizen'), {
-            latitude: latitude,
-            longitude: longitude,
-            safety: isSafe,
-          });
-
-          router.push('/safety/where/check');
-        } catch (error) {
-          console.error('データの保存に失敗しました:', error);
-        }
+        await saveLocationData(latitude, longitude, isSafe, router);
       },
-      (error) => {
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            console.error('ユーザーが位置情報の取得を拒否しました。');
-            break;
-          case error.POSITION_UNAVAILABLE:
-            console.error('位置情報が利用できません。');
-            break;
-          case error.TIMEOUT:
-            console.error('位置情報の取得がタイムアウトしました。');
-            break;
-          default:
-            console.error('未知のエラーが発生しました。', error);
-            break;
+      async (error) => {
+        console.error('navigator.geolocation による位置情報取得に失敗しました:', error);
+
+        // navigator.geolocationが失敗した場合にGoogle Geolocation APIを使用
+        try {
+          const { latitude, longitude } = await getGeolocationFromGoogleAPI();
+          await saveLocationData(latitude, longitude, isSafe, router);
+        } catch (error) {
+          console.error('Google Geolocation APIによる位置情報の取得にも失敗しました:', error);
         }
       },
       options
@@ -54,7 +78,6 @@ function uploadSafety(isSafe: boolean, router: AppRouterInstance) {
     console.error('Geolocationがサポートされていません。');
   }
 }
-
 
 export default function Safety() {
   const router = useRouter();
@@ -65,13 +88,13 @@ export default function Safety() {
       <div className={styles.safetybuttonContainer}>
         <button
           className={`${styles.safetybuttonButton} ${styles.yellow}`}
-          onClick={() => uploadSafety(false, router)}
+          onClick={() => fetchLocation(false, router)}
         >
           救助が必要
         </button>
         <button
           className={`${styles.safetybuttonButton} ${styles.darkgreen}`}
-          onClick={() => uploadSafety(true, router)}
+          onClick={() => fetchLocation(true, router)}
         >
           無事
         </button>

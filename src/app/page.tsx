@@ -8,9 +8,16 @@ export default function Home() {
 
   // クリーンアップ処理を行うuseEffect
   useEffect(() => {
+    const eventListener = () => {
+      console.log('An event triggered!');
+    };
+
+    // イベントリスナーの登録
+    window.addEventListener('someEvent', eventListener);
+
     return () => {
-      // コンポーネントのアンマウント時のクリーンアップ処理
-      console.log("Home component unmounted, performing cleanup if necessary");
+      // イベントリスナーの解除（クリーンアップ）
+      window.removeEventListener('someEvent', eventListener);
     };
   }, []);
 

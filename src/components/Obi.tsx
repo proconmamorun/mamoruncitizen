@@ -1,14 +1,38 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
+import { collection, query, orderBy, limit, getDocs } from "firebase/firestore";
+import { db } from "../services/FirebaseConfig";  // Firestoreのインスタンス
 import "./Obi.css";
 
 export function Obi() {
-    const message = "土砂崩れに注意してください";
-    const [messages, setMessages] = useState([message, message, message]);
+    const [messages, setMessages] = useState<string[]>([]);  // 初期状態は空
     const sliderRef = useRef(null);  // スライダーのDOM参照用
     const lastItemRef = useRef(null); // 最後のアイテムを参照
 
     useEffect(() => {
+        // Firestoreから最新のアラートメッセージを取得
+        const fetchAlertMessage = async () => {
+            try {
+                // Firestoreから `alert` コレクションの最新ドキュメントを取得
+                const alertQuery = query(collection(db, "alert"), orderBy("createdAt", "desc"), limit(1));
+                const querySnapshot = await getDocs(alertQuery);
+
+                if (!querySnapshot.empty) {
+                    const doc = querySnapshot.docs[0];
+                    const alertData = doc.data();
+                    const alertMessage = alertData.text || "警告: データがありません";  // `text`フィールドを取得、ない場合はデフォルト値
+                    setMessages([alertMessage, alertMessage, alertMessage]);  // 初期メッセージを設定
+                } else {
+                    setMessages(["警告: データがありません", "警告: データがありません", "警告: データがありません"]); // データがない場合の処理
+                }
+            } catch (error) {
+                console.error("Firestoreからメッセージの取得に失敗しました:", error);
+                setMessages(["エラー: メッセージを取得できません", "エラー: メッセージを取得できません", "エラー: メッセージを取得できません"]); // エラーハンドリング
+            }
+        };
+
+        fetchAlertMessage();  // Firestoreからデータを取得
+
         // Intersection Observer を設定して、最後の帯が画面に入ったら新しいメッセージを追加
         const observer = new IntersectionObserver(
             ([entry]) => {
@@ -33,7 +57,7 @@ export function Obi() {
                 observer.unobserve(lastItemRef.current);
             }
         };
-    }, [messages]);
+    }, []);
 
     return (
         <>
