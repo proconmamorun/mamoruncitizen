@@ -16,6 +16,7 @@
     "exif-js": "^2.3.0",
     "firebase": "^10.13.2",
     "next": "14.2.6",
+    "piexifjs": "^1.0.6",
     "react": "^18",
     "react-dom": "^18",
     "react-router-dom": "^6.26.1"
