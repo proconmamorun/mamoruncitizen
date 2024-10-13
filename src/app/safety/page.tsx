@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './safetypage.module.css';
 import { useRouter } from 'next/navigation';
 import { db } from "../../services/FirebaseConfig";
@@ -30,9 +30,11 @@ async function getGeolocationFromGoogleAPI() {
 }
 
 // 位置情報を保存する共通関数
-async function saveLocationData(latitude: number, longitude: number, isSafe: boolean, router: AppRouterInstance) {
+async function saveLocationData(name: string, locale: string, latitude: number, longitude: number, isSafe: boolean, router: AppRouterInstance) {
   try {
     await addDoc(collection(db, 'citizen'), {
+      name: name,
+      locale: locale,
       latitude: latitude,
       longitude: longitude,
       safety: isSafe,
@@ -47,6 +49,13 @@ async function saveLocationData(latitude: number, longitude: number, isSafe: boo
 
 // 位置情報を取得するメインの関数
 async function fetchLocation(isSafe: boolean, router: AppRouterInstance) {
+  const name = localStorage.getItem('userName'); // LocalStorageからユーザー名を取得
+  const locale = localStorage.getItem('locale'); // LocalStorageから地域を取得
+  if (!name || !locale) {
+    console.error('ユーザー情報が保存されていません。');
+    return;
+  }
+
   if (navigator.geolocation) {
     const options = {
       enableHighAccuracy: true,
@@ -59,7 +68,7 @@ async function fetchLocation(isSafe: boolean, router: AppRouterInstance) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
 
-        await saveLocationData(latitude, longitude, isSafe, router);
+        await saveLocationData(name, locale, latitude, longitude, isSafe, router);
       },
       async (error) => {
         console.error('navigator.geolocation による位置情報取得に失敗しました:', error);
@@ -67,7 +76,7 @@ async function fetchLocation(isSafe: boolean, router: AppRouterInstance) {
         // navigator.geolocationが失敗した場合にGoogle Geolocation APIを使用
         try {
           const { latitude, longitude } = await getGeolocationFromGoogleAPI();
-          await saveLocationData(latitude, longitude, isSafe, router);
+          await saveLocationData(name, locale, latitude, longitude, isSafe, router);
         } catch (error) {
           console.error('Google Geolocation APIによる位置情報の取得にも失敗しました:', error);
         }
@@ -81,23 +90,36 @@ async function fetchLocation(isSafe: boolean, router: AppRouterInstance) {
 
 export default function Safety() {
   const router = useRouter();
+  const [userName, setUserName] = useState<string | null>(null);
+
+  useEffect(() => {
+    // LocalStorageからユーザー名を取得し、stateにセット
+    const storedUserName = localStorage.getItem('userName');
+    setUserName(storedUserName);
+  }, []);
 
   return (
     <div className={styles.App}>
       <p className={styles.safetypageTitle}>あなたの状況は？</p>
       <div className={styles.safetybuttonContainer}>
-        <button
-          className={`${styles.safetybuttonButton} ${styles.yellow}`}
-          onClick={() => fetchLocation(false, router)}
-        >
-          救助が必要
-        </button>
-        <button
-          className={`${styles.safetybuttonButton} ${styles.darkgreen}`}
-          onClick={() => fetchLocation(true, router)}
-        >
-          無事
-        </button>
+        {userName ? (
+          <>
+            <button
+              className={`${styles.safetybuttonButton} ${styles.yellow}`}
+              onClick={() => fetchLocation(false, router)}
+            >
+              救助が必要
+            </button>
+            <button
+              className={`${styles.safetybuttonButton} ${styles.darkgreen}`}
+              onClick={() => fetchLocation(true, router)}
+            >
+              無事
+            </button>
+          </>
+        ) : (
+          <p>ユーザー情報が見つかりません。ログインしてください。</p>
+        )}
       </div>
     </div>
   );
