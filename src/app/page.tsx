@@ -10,7 +10,9 @@ export default function Home() {
     const eventListener = () => {
       console.log('An event triggered!');
     };
-
+    localStorage.setItem("userName", "宮野柊太");
+    localStorage.setItem("locale", "神領");
+    // イベントリスナーの登録
     window.addEventListener('someEvent', eventListener);
 
     return () => {

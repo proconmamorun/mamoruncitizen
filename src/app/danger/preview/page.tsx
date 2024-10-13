@@ -2,37 +2,30 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './preview.module.css';
-import { uploadImageWithExif } from '../../../services/UploadImage'; // 必要な関数をインポート
+import {uploadImageWithExif} from '@/services/UploadImage';
 
 export default function Preview() {
   const router = useRouter();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null); // 画像ファイルを保持するstate
   const [uploading, setUploading] = useState<boolean>(false); // アップロード中のステータス
 
   useEffect(() => {
-    // ローカルストレージから撮影した画像を取得
+    // ローカルストレージから撮影した画像のパスを取得
     const storedImage = localStorage.getItem('capturedImage');
     if (storedImage) {
-      setImageUrl(storedImage);
-      // Blobデータとして画像ファイルを再生成
-      const imageBlob = new Blob([storedImage], { type: 'image/jpeg' });
-      const file = new File([imageBlob], 'capturedImage.jpg', { type: 'image/jpeg' });
-      setImageFile(file);
+      setImageUrl(storedImage); // 画像のパス（URL）を状態にセット
     }
   }, []);
 
   // 送信ボタンを押したときに画像をアップロードし、送信完了ページに飛ぶ処理
   const handleSend = async () => {
-    if (!imageFile) return;
+    if (!imageUrl) return;
 
     try {
       setUploading(true); // アップロード中フラグをON
-      
-      // 画像をFirebaseにアップロード
-      const { imageUrl, coordinates, address } = await uploadImageWithExif(imageFile);
 
-      console.log('アップロード完了:', { imageUrl, coordinates, address });
+      // 画像のパスをFirebaseにアップロード
+      await uploadImageWithExif(imageUrl);
 
       // アップロード完了後に送信完了ページに遷移
       router.push('/safety/where/check');
