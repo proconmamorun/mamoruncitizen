@@ -122,7 +122,7 @@ export default function Evacuation() {
   if (error) {
     return <p>{error}</p>;
   }
-
+  console.log(routeData.risks);
   return (
     <div className={styles.container}>
       <div className={styles.header}>避難する</div>
@@ -156,9 +156,14 @@ export default function Evacuation() {
               <Marker
                 key={index}
                 position={{ lat: risk.lat, lng: risk.lng }}
-                label={`Risk ${index + 1}`}
+                label={`${risk.risk}`}
                 icon={{
-                  url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                  path: google.maps.SymbolPath.CIRCLE,  // 真円を指定
+                  scale: 10,  // 円の大きさを指定
+                  fillColor: '#FF0000',  // 塗りつぶし色
+                  fillOpacity: 1,  // 塗りつぶしの透明度
+                  strokeWeight: 1,  // 枠線の太さ
+                  strokeColor: '#000000',  // 枠線の色
                 }}
               />
             )
