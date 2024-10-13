@@ -14,7 +14,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px; /* ボタンやプレビュー全体をさらに下に配置 */
+    margin-top: 40px; /* ボタンやプレビュー全体をさらに下に配置 */
   }
   
   .cameraPreview {
