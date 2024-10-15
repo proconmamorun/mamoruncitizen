@@ -6,12 +6,33 @@ import styles from './danger.module.css';
 
 export default function Danger() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // エラーメッセージ用のステート
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const router = useRouter();
 
+  // カメラのサポートやHTTPS接続を確認する関数
+  const checkCameraSupport = () => {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setErrorMessage('このブラウザはカメラアクセスをサポートしていません。');
+      return false;
+    }
+
+    if (window.location.protocol !== "https:") {
+      setErrorMessage('カメラを利用するには、HTTPSで接続してください。');
+      return false;
+    }
+
+    return true;
+  };
+
   useEffect(() => {
     const startCamera = async () => {
+      // カメラのサポートチェック
+      if (!checkCameraSupport()) {
+        return;
+      }
+
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: { exact: "environment" } } // 外カメラを指定
@@ -21,6 +42,7 @@ export default function Danger() {
         }
       } catch (err) {
         console.error('カメラのアクセスに失敗しました:', err);
+        setErrorMessage('カメラのアクセスに失敗しました。設定を確認してください。');
       }
     };
 
@@ -38,7 +60,7 @@ export default function Danger() {
   const capturePhoto = () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
-    
+
     if (!video || !canvas) {
       console.error("Video or canvas is not available.");
       return;
@@ -75,7 +97,9 @@ export default function Danger() {
       <div className={styles.alertMessage}>周囲に注意！</div>
 
       <div className={styles.cameraPreview}>
-        {selectedImage ? (
+        {errorMessage ? (
+          <div className={styles.errorMessage}>{errorMessage}</div> // エラーメッセージ表示
+        ) : selectedImage ? (
           <img
             src={selectedImage}
             alt="Captured"
