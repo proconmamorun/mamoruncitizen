@@ -34,7 +34,9 @@ export default function Danger() {
       }
 
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: { exact: "environment" } }  // 外側カメラを指定
+        });
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
