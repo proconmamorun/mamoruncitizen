@@ -33,6 +33,12 @@ export function Footer() {
         <div className="Footer">
             <img
                 className="Footer-button"
+                src="/images/sensors.png"
+                alt="センサー"
+                onClick={handleSensorsClick}
+            />
+            <img
+                className="Footer-button"
                 src="/images/map.png"
                 alt="マップ"
                 onClick={handleMapClick}
@@ -48,12 +54,6 @@ export function Footer() {
                 src="/images/search.png"
                 alt="検索"
                 onClick={handleSearchClick}
-            />
-            <img
-                className="Footer-button"
-                src="/images/sensors.png"
-                alt="センサー"
-                onClick={handleSensorsClick}
             />
         </div>
     );
