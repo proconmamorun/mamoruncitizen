@@ -89,13 +89,14 @@ const isViolated = (response: HereServiceResponse): boolean => {
 };
 
 // Function to get safe pedestrian route and convert to Google Maps polyline format
+// Function to get safe pedestrian route and convert to Google Maps polyline format
 export async function GetSafePedestrianRoute(
     startPoint: [number, number],
     endPoint: [number, number]
 ): Promise<[{
     lat: number;
     lng: number;
-}[], Point[]]> {
+}[], Point[], { duration: number, length: number }]> {
     // Fetch risk points from Firebase
     const risks: Point[] = await fetchLocationData();
     // Get route from HERE API
@@ -111,6 +112,10 @@ export async function GetSafePedestrianRoute(
     // Convert the first route section polyline to Google Maps format
     let polylineArray = convertToGooglePolyline(response.routes[0].sections[0].polyline);
 
-    // Return polyline and risk points
-    return [polylineArray, risks];
+    // Retrieve duration and length from the response
+    const duration = response.routes[0].sections[0].summary.duration;
+    const length = response.routes[0].sections[0].summary.length;
+
+    // Return polyline, risk points, and route summary (duration and length)
+    return [polylineArray, risks, { duration, length }];
 }
