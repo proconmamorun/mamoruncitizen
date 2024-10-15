@@ -11,42 +11,19 @@
 
 .homeMainbuttonContainer {
   display: flex;
-  flex-direction: column; /* 縦方向に配置 */
-  gap: 50px; /* ボタン間のスペース */
-  width: 100%; /* 幅を画面いっぱいに設定 */
-  height: 100vh; /* コンテナの高さを画面全体に設定 */
-  box-sizing: border-box; /* パディングとボーダーを含めてサイズを計算 */
-  align-items: center; /* 垂直方向に中央揃え *//* src/app/Mainpage.module.css */
-  .App {
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: auto;
-    padding: 20px;
-    align-items: center;
-  }
-  
-  .homeMainbuttonContainer {
-    display: flex;
-    flex-direction: column; /* Keep the vertical arrangement */
-    gap: 20px; /* Reduce the gap between buttons */
-    width: 100%; /* Full width */
-    height: calc(100vh - 120px); /* Slightly reduce container height */
-    box-sizing: border-box; /* Maintain padding within size */
-    align-items: center; /* Center alignment */
-    padding-top: 20px; /* Adjust top padding */
-    overflow-y: hidden; /* Remove any scrolling */
-  }
-  
-  
-  
+  flex-direction: column; /* Keep the vertical arrangement */
+  gap: 20px; /* Reduce the gap between buttons */
+  width: 100%; /* Full width */
+  height: calc(100vh - 120px); /* Slightly reduce container height */
+  box-sizing: border-box; /* Maintain padding within size */
+  align-items: center; /* Center alignment */
+  padding-top: 20px; /* Adjust top padding */
+  overflow-y: hidden; /* Remove any scrolling */
+}
+    
   .imageButton {
     margin-top: 0; /* マージンの調整をリセット */
   }
-  
-  
-  
   
   .homeMainbuttonButton {
     font-size: 40px;
@@ -73,126 +50,4 @@
   
   
   padding-top: 80px; /* 上部の空白を設定 */
-}
-
-.homeMainbuttonButton {
-  font-size: 40px;
-  padding: 10px 20px;
-  color: #ffffff;
-  border: none;
-  width: 300px;
-  height: 180px;
-  margin: 10px 20px;
-  border-radius: 20px;
-}
-
-.darkgreen {
-  background-color: #2FA268;
-}
-
-.orange {
-  background-color: #F9B07B;
-}/* src/app/Mainpage.module.css */
-.App {
-  background-color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: auto;
-  padding: 20px;
-  align-items: center;
-}
-
-.homeMainbuttonContainer {
-  display: flex;
-  flex-direction: column; /* 縦方向に配置 */
-  gap: 50px; /* ボタン間のスペース */
-  width: 100%; /* 幅を画面いっぱいに設定 */
-  height: 100vh; /* コンテナの高さを画面全体に設定 */
-  box-sizing: border-box; /* パディングとボーダーを含めてサイズを計算 */
-  align-items: center; /* 垂直方向に中央揃え *//* src/app/Mainpage.module.css */
-  .App {
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: auto;
-    padding: 20px;
-    align-items: center;
-  }
-  
-  .homeMainbuttonContainer {
-    display: flex;
-    flex-direction: column; /* Keep the vertical arrangement */
-    gap: 20px; /* Reduce the gap between buttons */
-    width: 100%; /* Full width */
-    height: calc(100vh - 120px); /* Slightly reduce container height */
-    box-sizing: border-box; /* Maintain padding within size */
-    align-items: center; /* Center alignment */
-    padding-top: 20px; /* Adjust top padding */
-    overflow-y: hidden; /* Remove any scrolling */
-  }
-  
-  
-  
-  .imageButton {
-    margin-top: 0; /* マージンの調整をリセット */
-  }
-  
-  
-  
-  
-  .homeMainbuttonButton {
-    font-size: 40px;
-    padding: 10px 20px;
-    color: #ffffff;
-    border: none;
-    width: 300px;
-    height: 180px;
-    margin: 10px 20px;
-    border-radius: 20px;
-  }
-  
-  .darkgreen {
-    background-color: #2FA268;
-  }
-  
-  .orange {
-    background-color: #F9B07B;
-  }
-  
-  .green {
-    background-color: #98CB9A;
-  }
-  
-  
-  padding-top: 80px; /* 上部の空白を設定 */
-}
-
-.homeMainbuttonButton {
-  font-size: 40px;
-  padding: 10px 20px;
-  color: #ffffff;
-  border: none;
-  width: 300px;
-  height: 180px;
-  margin: 10px 20px;
-  border-radius: 20px;
-}
-
-.darkgreen {
-  background-color: #2FA268;
-}
-
-.orange {
-  background-color: #F9B07B;
-}
-
-.green {
-  background-color: #98CB9A;
-}
-
-
-.green {
-  background-color: #98CB9A;
 }
