@@ -13,9 +13,11 @@ export default function Danger() {
   useEffect(() => {
     const startCamera = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { exact: "environment" } } // 外カメラを指定
+        });
         if (videoRef.current) {
-          (videoRef.current as HTMLVideoElement).srcObject = stream;
+          videoRef.current.srcObject = stream;
         }
       } catch (err) {
         console.error('カメラのアクセスに失敗しました:', err);
