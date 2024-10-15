@@ -23,8 +23,9 @@ export function Obi() {
                     const alertMessage = alertData.text || "警告: データがありません";  // `text`フィールドを取得、ない場合はデフォルト値
                     setMessages([alertMessage, alertMessage, alertMessage]);  // 初期メッセージを設定
                 } else {
-                    setMessages(["警告: データがありません", "警告: データがありません", "警告: データがありません"]); // データがない場合の処理
+                    setMessages([""]); // データがない場合の処理
                 }
+                console.log(messages);
             } catch (error) {
                 console.error("Firestoreからメッセージの取得に失敗しました:", error);
                 setMessages(["エラー: メッセージを取得できません", "エラー: メッセージを取得できません", "エラー: メッセージを取得できません"]); // エラーハンドリング
@@ -58,6 +59,10 @@ export function Obi() {
             }
         };
     }, []);
+
+    if(messages[0] == ""){
+        return null;
+    }
 
     return (
         <>

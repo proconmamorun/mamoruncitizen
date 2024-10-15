@@ -46,7 +46,7 @@ async function updateLocationInFirestore(location: Location | null, isTurnBack: 
   if (location) {
     try {
       const docId = `${location.latitude}_${location.longitude}`; // 緯度_経度をドキュメントIDに使用
-      const docRef = doc(db, "locations", docId);
+      const docRef = doc(db, "microRisks", docId);
       const docSnap = await getDoc(docRef);
 
       let liskNumber;
@@ -54,7 +54,7 @@ async function updateLocationInFirestore(location: Location | null, isTurnBack: 
       const existingData = docSnap.data();
       if (existingData && typeof existingData.lisk === 'number') {
         if (isTurnBack) {
-          liskNumber = existingData.lisk + 3;
+          liskNumber = existingData.lisk + 2;
         } else { // 通った時の危険度
           liskNumber = existingData.lisk - 1;
         }
