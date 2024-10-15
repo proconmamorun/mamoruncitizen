@@ -173,7 +173,7 @@ export default function Evacuation() {
 
       <div className={styles.footer}>
         <div>
-          <div className={styles.time}>30 分</div>
+          <div className={styles.time}>{}</div>
           <div className={styles.distance}>1km・22:05</div>
         </div>
         <button className={styles.endButton} onClick={handleEndClick}>終了</button>
