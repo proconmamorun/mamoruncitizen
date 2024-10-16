@@ -6,7 +6,7 @@ import styles from './danger.module.css';
 
 export default function Danger() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null); // エラーメッセージ用のステート
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const router = useRouter();
@@ -28,15 +28,25 @@ export default function Danger() {
 
   useEffect(() => {
     const startCamera = async () => {
-      // カメラのサポートチェック
       if (!checkCameraSupport()) {
         return;
       }
 
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ 
-          video: { facingMode: { exact: "environment" } }  // 外側カメラを指定
-        });
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoInput = devices.find(
+          device =>
+            device.kind === 'videoinput' &&
+            device.label.toLowerCase().includes('back') // "back"が含まれるデバイスを外カメラとみなす
+        );
+
+        const constraints = {
+          video: videoInput
+            ? { deviceId: { exact: videoInput.deviceId } } // 外カメラを指定
+            : { facingMode: "environment" }, // 外カメラが見つからない場合、facingModeで試行
+        };
+
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
@@ -98,7 +108,7 @@ export default function Danger() {
 
       <div className={styles.cameraPreview}>
         {errorMessage ? (
-          <div className={styles.errorMessage}>{errorMessage}</div> // エラーメッセージ表示
+          <div className={styles.errorMessage}>{errorMessage}</div>
         ) : selectedImage ? (
           <img
             src={selectedImage}
@@ -110,6 +120,7 @@ export default function Danger() {
             ref={videoRef}
             autoPlay
             playsInline
+            muted
             style={{ width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}
           />
         )}
