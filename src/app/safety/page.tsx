@@ -30,7 +30,7 @@ async function getGeolocationFromGoogleAPI() {
 }
 
 // 位置情報を保存する共通関数
-async function saveLocationData(name: string, locale: string, latitude: number, longitude: number, isSafe: boolean, router: AppRouterInstance) {
+async function saveLocationData(name: string, locale: string, latitude: number, longitude: number, isSafe: string, router: AppRouterInstance) {
   try {
     await addDoc(collection(db, 'citizen'), {
       name: name,
@@ -48,7 +48,7 @@ async function saveLocationData(name: string, locale: string, latitude: number, 
 }
 
 // 位置情報を取得するメインの関数
-async function fetchLocation(isSafe: boolean, router: AppRouterInstance) {
+async function fetchLocation(isSafe: string, router: AppRouterInstance) {
   const name = localStorage.getItem('userName'); // LocalStorageからユーザー名を取得
   const locale = localStorage.getItem('locale'); // LocalStorageから地域を取得
   if (!name || !locale) {
@@ -106,13 +106,13 @@ export default function Safety() {
           <>
             <button
               className={`${styles.safetybuttonButton} ${styles.yellow}`}
-              onClick={() => fetchLocation(false, router)}
+              onClick={() => fetchLocation("救助が必要", router)}
             >
               救助が必要
             </button>
             <button
               className={`${styles.safetybuttonButton} ${styles.darkgreen}`}
-              onClick={() => fetchLocation(true, router)}
+              onClick={() => fetchLocation("無事", router)}
             >
               無事
             </button>
