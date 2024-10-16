@@ -84,5 +84,6 @@
     animation-delay: 0s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+    animation: slideLeft 40s linear infinite; 
   }
   

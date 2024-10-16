@@ -8,14 +8,26 @@
   height: 100vh;
   padding: 20px;
   text-align: center;
-  transition: opacity 0.5s ease-in-out; /* フェードアウトの時間を0.5秒に変更 */
-}
-
-.fadeOut {
-  opacity: 0; /* フェードアウト時に透明にする */
 }
 
 .safetypageTitle {
   font-size: 50px;
   color: #52514D;
+}
+
+.greenButton { /* 緑色のボタンのスタイル */
+  font-size: 40px; /* フォントサイズを大きく */
+  color: white;
+  background-color: #2FA268;
+  padding: 10px 20px;
+  width: 350px;
+  height: 125px;
+  border: none;
+  border-radius: 40px; /* ボーダーの角を少し大きく */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* ホバー時の背景色変更アニメーション */
+}
+
+.greenButton:hover {
+  background-color: #268556; /* ホバー時の背景色を少し暗く */
 }

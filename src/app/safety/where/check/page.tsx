@@ -1,34 +1,20 @@
 // src/app/safety/where/check/page.tsx
 'use client';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styles from './checkpage.module.css';
 import { useRouter } from 'next/navigation';
 
 export default function Check() {
-  const [fadeOut, setFadeOut] = useState(false); // フェードアウト状態を管理
-  const router = useRouter();
+  const router = useRouter(); // useRouter フックを使用してルーターを取得
 
-  useEffect(() => {
-    // 1秒後にフェードアウトを開始
-    const timer1 = setTimeout(() => {
-      setFadeOut(true); // フェードアウトを開始
-    }, 500); // 1秒後にフェードアウト開始
-
-    // フェードアウト後にホームページに遷移
-    const timer2 = setTimeout(() => {
-      router.push('/');
-    }, 1200); // 2秒後にホームページに遷移
-
-    // クリーンアップ関数でタイマーをクリア
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-    };
-  }, [router]);
+  const handleBackToHome = () => {
+    router.push('/'); // ホームページ（'/'）への遷移を実行
+  };
 
   return (
-    <div className={`${styles.App} ${fadeOut ? styles.fadeOut : ''}`}>
+    <div className={styles.App}>
       <p className={styles.safetypageTitle}>送信完了</p>
+      <button className={styles.greenButton} onClick={handleBackToHome}>ホームに戻る</button>
     </div>
   );
 }
