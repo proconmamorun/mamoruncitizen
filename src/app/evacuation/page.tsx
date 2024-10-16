@@ -46,7 +46,12 @@ export default function Evacuation() {
 
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [currentLocation, setCurrentLocation] = useState<google.maps.LatLngLiteral | null>(null); // 現在地の管理
-  const [routeData, setRouteData] = useState<{ path: google.maps.LatLngLiteral[]; risks: Point[] }>({ path: [], risks: [] });
+  const [routeData, setRouteData] = useState<{ path: google.maps.LatLngLiteral[]; risks: Point[]; duration: number; length: number }>({
+    path: [],
+    risks: [],
+    duration: 0,
+    length: 0,
+  });
   const [error, setError] = useState<string | null>(null);
 
   const handleEndClick = () => {
@@ -94,8 +99,8 @@ export default function Evacuation() {
           const start: [number, number] = [currentLocation.lng, currentLocation.lat];
           const end: [number, number] = [fixedEndPoint.lng, fixedEndPoint.lat];  // 固定のエンドポイント
 
-          const [routePolyline, risks] = await GetSafePedestrianRoute(start, end);
-          setRouteData({ path: routePolyline, risks });
+          const [routePolyline, risks, { duration, length }] = await GetSafePedestrianRoute(start, end);
+          setRouteData({ path: routePolyline, risks, duration, length });
         } catch (error) {
           setError('ルート取得中にエラーが発生しました。');
         }
@@ -122,7 +127,11 @@ export default function Evacuation() {
   if (error) {
     return <p>{error}</p>;
   }
-  console.log(routeData.risks);
+  
+  // 距離をkmに変換、所要時間を分に変換
+  const formattedDistance = (routeData.length / 1000).toFixed(2);  // 距離をキロメートル単位でフォーマット
+  const formattedTime = Math.floor(routeData.duration / 60);  // 時間を分に変換
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>避難する</div>
@@ -173,8 +182,8 @@ export default function Evacuation() {
 
       <div className={styles.footer}>
         <div>
-          <div className={styles.time}>30 分</div>
-          <div className={styles.distance}>1km・22:05</div>
+          <div className={styles.time}>{formattedTime}分</div>
+          <div className={styles.distance}>{formattedDistance} km</div>
         </div>
         <button className={styles.endButton} onClick={handleEndClick}>終了</button>
       </div>
