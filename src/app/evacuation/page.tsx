@@ -165,7 +165,17 @@ export default function Evacuation() {
             <Polyline path={routeData.path} options={{ strokeColor: '#0000FF', strokeWeight: 5 }} />
           )}
 
-          {currentLocation && <Marker position={currentLocation} label="Start" />}
+          {currentLocation && <Marker
+            position={currentLocation}
+            icon={{
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 16,
+              fillColor: '#0000FF',
+              fillOpacity: 1,
+              strokeWeight: 4,
+              strokeColor: '#FFFFFF',
+            }}
+            label="現在位置" />}
 
           <Marker position={fixedEndPoint} label="End" />
 
