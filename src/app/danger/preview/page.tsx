@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './preview.module.css';
-import {uploadImageWithExif} from '@/services/UploadImage';
+import {uploadImageWithLocationInFilename} from '@/services/UploadImage';
 
 export default function Preview() {
   const router = useRouter();
@@ -25,7 +25,7 @@ export default function Preview() {
       setUploading(true); // アップロード中フラグをON
 
       // 画像のパスをFirebaseにアップロード
-      await uploadImageWithExif(imageUrl);
+      await uploadImageWithLocationInFilename(imageUrl);
 
       // アップロード完了後に送信完了ページに遷移
       router.push('/safety/where/check');

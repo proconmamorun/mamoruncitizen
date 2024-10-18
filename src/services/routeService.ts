@@ -105,7 +105,9 @@ export async function GetSafePedestrianRoute(
     const returnRisks: Point[] = [...risks];
     const querySnapshot = await getDocs(collection(db, "microRisks"));
     querySnapshot.forEach((doc) => {
-        risks.push(doc.data() as { lat: number, lng: number, risk: number });
+        if((doc.data() as { lat: number, lng: number, risk: number }).risk > 0){
+            risks.push(doc.data() as { lat: number, lng: number, risk: number });
+        }
     });
 
     // Get route from HERE API
@@ -113,7 +115,7 @@ export async function GetSafePedestrianRoute(
     console.log(response);
     const minTime: number = (await searchRouteForPedestrians(startPoint, endPoint, []) as HereServiceResponse).routes[0].sections[0].summary.duration;
     
-    for(let i:number = 1; i < 5 && (isViolated(response) || minTime * 2 < response.routes[0].sections[0].summary.duration); i++){
+    for(let i:number = 1; i < 5 && (isViolated(response) || minTime * 1.6 < response.routes[0].sections[0].summary.duration); i++){
         response = await searchRouteForPedestrians(startPoint, endPoint, risks.filter((value: Point, index: number, array: Point[])=>value.risk > i))
         console.log(`riskLevel ${i} is violated`);
     }

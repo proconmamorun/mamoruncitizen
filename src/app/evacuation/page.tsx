@@ -6,10 +6,11 @@ import { GoogleMap, Marker, Polyline, useJsApiLoader } from '@react-google-maps/
 import styles from './evacuationpage.module.css';
 import { GetSafePedestrianRoute } from '@/services/routeService';
 import { Point } from '@/services/firebaseService';
+import detectRotationAndUpload from './RotationDetector';
 
 const containerStyle = {
   width: '100%',
-  height: '100vh',
+  height: '80vh',
 };
 
 const defaultCenter = {
@@ -18,8 +19,8 @@ const defaultCenter = {
 };
 
 const fixedEndPoint = {
-  lat: 33.974673,
-  lng: 134.361644,
+  lat: 33.969532,
+  lng: 134.359609,
 };
 
 const options = {
@@ -85,7 +86,7 @@ export default function Evacuation() {
       // } else {
       //   setError('Geolocationがサポートされていません。');
       // }
-      const location = { lat: 33.969254, lng: 134.361731 };
+      const location = { lat: 33.973797, lng: 134.359609 };
       setCurrentLocation(location);
 
       if (!userMovedMap.current) {
@@ -95,8 +96,11 @@ export default function Evacuation() {
 
     getGeolocation();
     const locationInterval = setInterval(getGeolocation, 10000);
-
-    return () => clearInterval(locationInterval);
+    const resetDetectRotation = detectRotationAndUpload();
+    return () => {
+      clearInterval(locationInterval);
+      resetDetectRotation();
+    };
   }, []);
 
   const fetchSafeRoute = useCallback(async () => {
