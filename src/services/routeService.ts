@@ -1,6 +1,8 @@
 import { fetchLocationData, Point } from "./firebaseService";
 import axios from 'axios';
 import {decode} from './polylineService'
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./FirebaseConfig";
 
 
 // HERE Routing API endpoint
@@ -50,7 +52,7 @@ const searchRouteForPedestrians = async (
         const validRisks = pointsToAvoid.filter(risk => risk.lat !== undefined && risk.lng !== undefined);
 
         // Encode the polyline from risk points (for the corridor)
-        const m = 0.0001;
+        const m = 0.00009;
         const boxPolyline = validRisks.map(risk => `bbox:${risk.lng-m},${risk.lat-m},${risk.lng+m},${risk.lat+m}`).join('|');
 
         // HERE Routing API request
@@ -64,6 +66,7 @@ const searchRouteForPedestrians = async (
                 return: 'polyline,summary'  // Return route as polyline
             }
         });
+        console.log(response);
 
         return response.data as HereServiceResponse;
     } catch (error) {
@@ -99,12 +102,18 @@ export async function GetSafePedestrianRoute(
 }[], Point[], { duration: number, length: number }]> {
     // Fetch risk points from Firebase
     const risks: Point[] = await fetchLocationData();
+    const returnRisks: Point[] = [...risks];
+    const querySnapshot = await getDocs(collection(db, "microRisks"));
+    querySnapshot.forEach((doc) => {
+        risks.push(doc.data() as { lat: number, lng: number, risk: number });
+    });
+
     // Get route from HERE API
     let response: HereServiceResponse = await searchRouteForPedestrians(startPoint, endPoint, risks);
     console.log(response);
     const minTime: number = (await searchRouteForPedestrians(startPoint, endPoint, []) as HereServiceResponse).routes[0].sections[0].summary.duration;
     
-    for(let i:number = 1; i < 5 && (isViolated(response) || minTime * 1.2 < response.routes[0].sections[0].summary.duration); i++){
+    for(let i:number = 1; i < 5 && (isViolated(response) || minTime * 2 < response.routes[0].sections[0].summary.duration); i++){
         response = await searchRouteForPedestrians(startPoint, endPoint, risks.filter((value: Point, index: number, array: Point[])=>value.risk > i))
         console.log(`riskLevel ${i} is violated`);
     }
@@ -117,5 +126,5 @@ export async function GetSafePedestrianRoute(
     const length = response.routes[0].sections[0].summary.length;
 
     // Return polyline, risk points, and route summary (duration and length)
-    return [polylineArray, risks, { duration, length }];
+    return [polylineArray, returnRisks, { duration, length }];
 }

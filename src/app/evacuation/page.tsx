@@ -18,8 +18,8 @@ const defaultCenter = {
 };
 
 const fixedEndPoint = {
-  lat: 33.973618,
-  lng: 134.367512,
+  lat: 33.974673,
+  lng: 134.361644,
 };
 
 const options = {
@@ -61,38 +61,40 @@ export default function Evacuation() {
     router.push('/evacuation/evacuation-done');
   };
 
-  const toggleMapType = () => {
-    setMapType((prevType) => (prevType === 'roadmap' ? 'satellite' : 'roadmap'));
-  };
-
   // 現在地の取得
   useEffect(() => {
     const getGeolocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            const location = { lat: latitude, lng: longitude };
-            setCurrentLocation(location);
+      // if (navigator.geolocation) {
+      //   navigator.geolocation.getCurrentPosition(
+      //     (position) => {
+      //       const { latitude, longitude } = position.coords;
+      //       const location = { lat: latitude, lng: longitude };
+      //       setCurrentLocation(location);
 
-            // ユーザーがマップを動かしていない場合のみ、マップの中心を現在地に更新
-            if (!userMovedMap.current) {
-              setMapCenter(location);
-            }
-          },
-          (error) => {
-            console.error("位置情報の取得に失敗しました", error);
-            setError('位置情報の取得中にエラーが発生しました。');
-          },
-          { enableHighAccuracy: true }
-        );
-      } else {
-        setError('Geolocationがサポートされていません。');
+      //       // ユーザーがマップを動かしていない場合のみ、マップの中心を現在地に更新
+      //       if (!userMovedMap.current) {
+      //         setMapCenter(location);
+      //       }
+      //     },
+      //     (error) => {
+      //       console.error("位置情報の取得に失敗しました", error);
+      //       setError('位置情報の取得中にエラーが発生しました。');
+      //     },
+      //     { enableHighAccuracy: true }
+      //   );
+      // } else {
+      //   setError('Geolocationがサポートされていません。');
+      // }
+      const location = { lat: 33.969254, lng: 134.361731 };
+      setCurrentLocation(location);
+
+      if (!userMovedMap.current) {
+        setMapCenter(location);
       }
     };
 
     getGeolocation();
-    const locationInterval = setInterval(getGeolocation, 5000);
+    const locationInterval = setInterval(getGeolocation, 10000);
 
     return () => clearInterval(locationInterval);
   }, []);
@@ -153,7 +155,7 @@ export default function Evacuation() {
       <div className={styles.mapPlaceholder}>
         <GoogleMap
           mapContainerStyle={containerStyle}
-          zoom={16}
+          zoom={15}
           center={mapCenter}
           mapTypeId={mapType}
           options={options}
@@ -172,12 +174,18 @@ export default function Evacuation() {
               scale: 16,
               fillColor: '#0000FF',
               fillOpacity: 1,
-              strokeWeight: 4,
+              strokeWeight: 10,
               strokeColor: '#FFFFFF',
-            }}
-            label="現在位置" />}
+              strokeOpacity: 0.7
+            }}/>}
 
-          <Marker position={fixedEndPoint} label="End" />
+          <Marker
+            position={fixedEndPoint}
+            icon={{
+              url: '/images/shelter.png',  // publicディレクトリ経由でのパス
+              scaledSize: new google.maps.Size(50, 50),  // アイコンのサイズ調整
+              anchor: new google.maps.Point(25, 25),  // 基準点の設定
+            }}/>
 
           {routeData.risks.map((risk, index) => (
             risk.lat && risk.lng && (

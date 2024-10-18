@@ -45,15 +45,15 @@ export function Footer() {
             />
             <img
                 className="Footer-button"
-                src="/images/photo.png"
-                alt="写真"
-                onClick={handlePhotoClick}
-            />
-            <img
-                className="Footer-button"
                 src="/images/search.png"
                 alt="検索"
                 onClick={handleSearchClick}
+            />
+            <img
+                className="Footer-button"
+                src="/images/photo.png"
+                alt="写真"
+                onClick={handlePhotoClick}
             />
         </div>
     );
