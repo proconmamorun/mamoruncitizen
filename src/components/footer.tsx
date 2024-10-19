@@ -31,22 +31,22 @@ export function Footer() {
 
     // 現在のパスに応じて画像を変更する
     useEffect(() => {
-        const specificImages = pageSpecificImages[pathname] || {};
+        const specificImages = pageSpecificImages[pathname as keyof typeof pageSpecificImages] || {};
         // デフォルト画像とページ用画像をマージして設定
         setImages({ ...defaultImages, ...specificImages });
     }, [pathname]); // パスが変わるたびに実行
 
     // 一時的に画像を変更する処理
-    const changeImageTemporarily = (buttonKey, darkImage, callback) => {
-        setImages((prev) => ({ ...prev, [buttonKey]: darkImage }));
+    const changeImageTemporarily = (buttonKey: string | number, darkImage: any, callback: { (): void; (): void; }) => {
+        setImages((prev) => ({ ...prev, [buttonKey as keyof typeof defaultImages]: darkImage }));
         setTimeout(() => {
-            setImages((prev) => ({ ...prev, [buttonKey]: defaultImages[buttonKey] }));
+            setImages((prev) => ({ ...prev, [buttonKey as keyof typeof defaultImages]: defaultImages[buttonKey as keyof typeof defaultImages] }));
             if (callback) callback();
         }, 250);
     };
 
     // ボタンのクリックイベントハンドラ
-    const handleButtonClick = (buttonKey, darkImage, path) => {
+    const handleButtonClick = (buttonKey: string, darkImage: string, path: string) => {
         changeImageTemporarily(buttonKey, darkImage, () => {
             router.push(path);
         });

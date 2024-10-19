@@ -37,13 +37,13 @@ const options = {
 };
 
 // リスクアイコンのマッピング
-const riskIcons = {
-  1: '/images/risk-1.png',
-  2: '/images/risk-2.png',
-  3: '/images/risk-3.png',
-  4: '/images/risk-4.png',
-  5: '/images/risk-5.png',
-};
+const riskIcons = [
+  '/images/risk-1.png',
+  '/images/risk-2.png',
+  '/images/risk-3.png',
+  '/images/risk-4.png',
+  '/images/risk-5.png',
+];
 
 export default function Evacuation() {
   const router = useRouter();
