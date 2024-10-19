@@ -103,3 +103,13 @@
 .overrideBottomImage {
   bottom: 0 !important; /* ページに関係なく、画面の一番下に固定 */
 }
+
+/* src/app/evacuation/evacuationpage.module.css */
+.danger-grade {
+  position: absolute;
+  top: 5px; /* 上からの距離 */
+  right: 5px; /* 右からの距離 */
+  width: 50px; /* 幅 */
+  height: auto; /* アスペクト比を維持 */
+  z-index: 20; /* マップよりも上に表示 */
+}

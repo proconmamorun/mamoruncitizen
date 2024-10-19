@@ -1,52 +1,54 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Footer.css";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 export function Footer() {
     const router = useRouter();
+    const pathname = usePathname(); // 現在のパスを取得
 
-    // 各画像の状態を管理するuseStateフック
-    const [sensorImage, setSensorImage] = useState("/images/sensors.png");
-    const [mapImage, setMapImage] = useState("/images/map.png");
-    const [searchImage, setSearchImage] = useState("/images/search.png");
-    const [photoImage, setPhotoImage] = useState("/images/photo.png");
+    // 初期の1ボタン画像をまとめたオブジェクト
+    const defaultImages = {
+        sensor: "/images/sensors.png",
+        map: "/images/map.png",
+        search: "/images/search.png",
+        photo: "/images/photo.png",
+    };
 
-    // 画像の一時変更処理
-    const changeImageTemporarily = (setImage, darkImage, originalImage, callback) => {
-        setImage(darkImage); // ダークモードの画像に変更
+    // ページごとの2ボタン画像を管理するオブジェクト
+    const pageSpecificImages = {
+        "/": { sensor: "/images/sensors-dark.png" },
+        "/evacuation": { map: "/images/map-dark.png" },
+        "/evacuation/evacuation-done": { map: "/images/map-dark.png" },
+        "/danger": { photo: "/images/photo-dark.png" },
+        "/danger/preview": { photo: "/images/photo-dark.png" },
+        "/safety": { search: "/images/search-dark.png" },
+        "/safety/where/check": { search: "/images/search-dark.png" },
+    };
+
+    // ボタン画像の状態を管理するuseState
+    const [images, setImages] = useState(defaultImages);
+
+    // 現在のパスに応じて画像を変更する
+    useEffect(() => {
+        const specificImages = pageSpecificImages[pathname] || {};
+        // デフォルト画像とページ用画像をマージして設定
+        setImages({ ...defaultImages, ...specificImages });
+    }, [pathname]); // パスが変わるたびに実行
+
+    // 一時的に画像を変更する処理
+    const changeImageTemporarily = (buttonKey, darkImage, callback) => {
+        setImages((prev) => ({ ...prev, [buttonKey]: darkImage }));
         setTimeout(() => {
-            setImage(originalImage); // 2秒後に元の画像に戻す
-            if (callback) callback(); // 必要ならページ遷移などの処理を実行
+            setImages((prev) => ({ ...prev, [buttonKey]: defaultImages[buttonKey] }));
+            if (callback) callback();
         }, 250);
     };
 
-    // 各ボタンのクリックイベントハンドラ
-    const handleSensorsClick = () => {
-        console.log("センサーがタップされました");
-        changeImageTemporarily(setSensorImage, "/images/sensors-dark.png", "/images/sensors.png", () => {
-            router.push('/');
-        });
-    };
-
-    const handleMapClick = () => {
-        console.log("マップがタップされました");
-        changeImageTemporarily(setMapImage, "/images/map-dark.png", "/images/map.png", () => {
-            router.push('/evacuation');
-        });
-    };
-
-    const handleSearchClick = () => {
-        console.log("検索がタップされました");
-        changeImageTemporarily(setSearchImage, "/images/search-dark.png", "/images/search.png", () => {
-            router.push('/safety');
-        });
-    };
-
-    const handlePhotoClick = () => {
-        console.log("写真がタップされました");
-        changeImageTemporarily(setPhotoImage, "/images/photo-dark.png", "/images/photo.png", () => {
-            router.push('/danger');
+    // ボタンのクリックイベントハンドラ
+    const handleButtonClick = (buttonKey, darkImage, path) => {
+        changeImageTemporarily(buttonKey, darkImage, () => {
+            router.push(path);
         });
     };
 
@@ -54,27 +56,27 @@ export function Footer() {
         <div className="Footer">
             <img
                 className="Footer-button"
-                src={sensorImage}
+                src={images.sensor}
                 alt="センサー"
-                onClick={handleSensorsClick}
+                onClick={() => handleButtonClick("sensor", "/images/sensors-dark.png", "/")}
             />
             <img
                 className="Footer-button"
-                src={mapImage}
+                src={images.map}
                 alt="マップ"
-                onClick={handleMapClick}
+                onClick={() => handleButtonClick("map", "/images/map-dark.png", "/evacuation")}
             />
             <img
                 className="Footer-button"
-                src={searchImage}
+                src={images.search}
                 alt="検索"
-                onClick={handleSearchClick}
+                onClick={() => handleButtonClick("search", "/images/search-dark.png", "/safety")}
             />
             <img
                 className="Footer-button"
-                src={photoImage}
+                src={images.photo}
                 alt="写真"
-                onClick={handlePhotoClick}
+                onClick={() => handleButtonClick("photo", "/images/photo-dark.png", "/danger")}
             />
         </div>
     );
