@@ -1,7 +1,5 @@
-// Obi.tsx
-"use client";
 import React, { useState, useEffect, useRef } from "react";
-import { collection, query, orderBy, limit, getDocs } from "firebase/firestore";
+import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
 import { db } from "../services/FirebaseConfig";
 import "./Obi.css";
 
@@ -13,54 +11,41 @@ type ObiProps = {
 export const Obi: React.FC<ObiProps> = ({ positions, isEvacuationPage }) => {
   const [messages, setMessages] = useState<string[]>([]);
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
-  
-  // 各帯ごとに参照を持つ
   const sliderRefs = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
-    // Firestoreから最新のアラートメッセージを取得
-    const fetchAlertMessage = async () => {
-      try {
-        const alertQuery = query(
-          collection(db, "alert"),
-          orderBy("createdAt", "desc"),
-          limit(3)
-        );
-        const querySnapshot = await getDocs(alertQuery);
+    // Firestoreの変更をリアルタイムで監視
+    const alertQuery = query(
+      collection(db, "alert"),
+      orderBy("createdAt", "desc"),
+      limit(3)
+    );
 
-        if (!querySnapshot.empty) {
-          const fetchedMessages = querySnapshot.docs.map(
-            (doc) => doc.data().text || "警告: データがありません"
-          );
-          setMessages(fetchedMessages);
-        } else {
-          setMessages([
-            "警告: データがありません",
-            "警告: データがありません",
-            "警告: データがありません",
-          ]);
-        }
-      } catch (error) {
-        console.error("Firestoreからメッセージの取得に失敗しました:", error);
+    const unsubscribe = onSnapshot(alertQuery, (querySnapshot) => {
+      if (!querySnapshot.empty) {
+        const fetchedMessages = querySnapshot.docs.map(
+          (doc) => doc.data().text || "警告: データがありません"
+        );
+        setMessages(fetchedMessages);
+      } else {
         setMessages([
-          "エラー: メッセージを取得できません",
-          "エラー: メッセージを取得できません",
-          "エラー: メッセージを取得できません",
+          "警告: データがありません",
+          "警告: データがありません",
+          "警告: データがありません",
         ]);
       }
-    };
+    });
 
-    fetchAlertMessage();
+    // クリーンアップ
+    return () => unsubscribe();
   }, []);
 
-  // アニメーション終了を監視し、次のメッセージを表示
   const handleAnimationEnd = () => {
     if (messages.length > 0) {
       setCurrentMessageIndex((prevIndex) => (prevIndex + 1) % messages.length);
     }
   };
 
-  // スライダーの参照が取得できたら、アニメーション終了を監視するイベントを設定
   useEffect(() => {
     sliderRefs.current.forEach((sliderElement) => {
       if (sliderElement) {
@@ -85,9 +70,9 @@ export const Obi: React.FC<ObiProps> = ({ positions, isEvacuationPage }) => {
     <>
       {positions.map((pos, index) => {
         const isTop = pos === "top";
-        const key = isTop ? "obi-top" : "obi-bottom"; // キーを固定
-        const positionClass = isTop ? "obiTop" : "obiBottom"; // クラス名を固定
-        const additionalClass = !isTop && !isEvacuationPage ? "obiBelow" : ""; // 非避難ページで下部帯の場合、obiBelowを追加
+        const key = isTop ? "obi-top" : "obi-bottom";
+        const positionClass = isTop ? "obiTop" : "obiBottom";
+        const additionalClass = !isTop && !isEvacuationPage ? "obiBelow" : "";
 
         return (
           <div
@@ -100,7 +85,7 @@ export const Obi: React.FC<ObiProps> = ({ positions, isEvacuationPage }) => {
                 if (el) {
                   sliderRefs.current[index] = el;
                 }
-              }}              
+              }}
             >
               <div className="sliderTextWithIcon" key={currentMessageIndex}>
                 <img src="/images/obi-arrow.png" alt="矢印" className="arrowIcon" />

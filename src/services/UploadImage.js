@@ -25,31 +25,38 @@ async function getGeolocation() {
   };
 }
 
+function getCurrentPosition() {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      return reject(new Error('Geolocation is not supported'));
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => resolve(position),
+      (error) => reject(error),
+      { enableHighAccuracy: true }
+    );
+  });
+}
+
 export async function uploadImageWithLocationInFilename(imageUrl) {
   try {
     // 1. 画像の取得
     const response = await fetch(imageUrl);
     const blob = await response.blob();
 
-    let position;
+    let position = { latitude: 0, longitude: 0 };
 
-    // 2. Google Geolocation APIを使用して現在位置を取得
-    if(navigator.geolocation){
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          const position = { lat: latitude, lng: longitude };
-        },
-        (error) => {
-          console.error("位置情報の取得に失敗しました", error);
-          setError('位置情報の取得中にエラーが発生しました。');
-        },
-        { enableHighAccuracy: true }
-      );
-    }else{
-      position = await getGeolocation();
+    // 2. 現在位置の取得をPromiseを使って待機
+    try {
+      const geoPosition = await getCurrentPosition();
+      const { latitude, longitude } = geoPosition.coords;
+      position = { latitude, longitude };
+    } catch (error) {
+      console.error("位置情報の取得に失敗しました:", error);
+      position = await getGeolocation();  // 失敗した場合、Google APIを使用
     }
-    
+
     const { latitude, longitude } = position;
 
     // 3. ファイル名に緯度・経度を含める
@@ -59,8 +66,8 @@ export async function uploadImageWithLocationInFilename(imageUrl) {
     const fileName = `image,${sanitizedLatitude},${sanitizedLongitude},${Date.now()}.jpg`;
 
     // 4. Firebase Storageにアップロード
-    const storageRef = ref(storage, fileName); 
-    await uploadBytes(storageRef, blob); 
+    const storageRef = ref(storage, fileName);
+    await uploadBytes(storageRef, blob);
 
     // 5. ダウンロードURLを取得
     const downloadUrl = await getDownloadURL(storageRef);
