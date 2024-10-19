@@ -6,7 +6,6 @@ import { GoogleMap, Marker, Polyline, useJsApiLoader } from '@react-google-maps/
 import styles from './evacuationpage.module.css';
 import { GetSafePedestrianRoute } from '@/services/routeService';
 import { Point } from '@/services/firebaseService';
-import detectRotationAndUpload from './RotationDetector';
 
 const containerStyle = {
   width: '100%',
@@ -91,10 +90,8 @@ export default function Evacuation() {
 
     getGeolocation();
     const locationInterval = setInterval(getGeolocation, 10000);
-    const resetDetectRotation = detectRotationAndUpload();
     return () => {
       clearInterval(locationInterval);
-      resetDetectRotation();
     };
   }, []);
 
