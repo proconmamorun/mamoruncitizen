@@ -11,7 +11,7 @@ export default function Home() {
       console.log('An event triggered!');
     };
     localStorage.setItem("userName", "宮野柊太");
-    localStorage.setItem("locale", "神領");
+    localStorage.setItem("district", "神領");
     // イベントリスナーの登録
     window.addEventListener('someEvent', eventListener);
 
