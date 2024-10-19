@@ -1,57 +1,78 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import "./Footer.css";
 import { useRouter } from "next/navigation";
 
 export function Footer() {
     const router = useRouter();
-    const handleMapClick = () => {
-        console.log("マップがタップされました");
-        // マップがタップされた時の処理を追加
-        router.push('/evacuation');
+
+    // 各画像の状態を管理するuseStateフック
+    const [sensorImage, setSensorImage] = useState("/images/sensors.png");
+    const [mapImage, setMapImage] = useState("/images/map.png");
+    const [searchImage, setSearchImage] = useState("/images/search.png");
+    const [photoImage, setPhotoImage] = useState("/images/photo.png");
+
+    // 画像の一時変更処理
+    const changeImageTemporarily = (setImage, darkImage, originalImage, callback) => {
+        setImage(darkImage); // ダークモードの画像に変更
+        setTimeout(() => {
+            setImage(originalImage); // 2秒後に元の画像に戻す
+            if (callback) callback(); // 必要ならページ遷移などの処理を実行
+        }, 250);
     };
 
-    const handlePhotoClick = () => {
-        console.log("写真がタップされました");
-        // 写真がタップされた時の処理を追加
-        router.push('/danger');
+    // 各ボタンのクリックイベントハンドラ
+    const handleSensorsClick = () => {
+        console.log("センサーがタップされました");
+        changeImageTemporarily(setSensorImage, "/images/sensors-dark.png", "/images/sensors.png", () => {
+            router.push('/');
+        });
+    };
+
+    const handleMapClick = () => {
+        console.log("マップがタップされました");
+        changeImageTemporarily(setMapImage, "/images/map-dark.png", "/images/map.png", () => {
+            router.push('/evacuation');
+        });
     };
 
     const handleSearchClick = () => {
         console.log("検索がタップされました");
-        // 検索がタップされた時の処理を追加
-        router.push('/safety');
+        changeImageTemporarily(setSearchImage, "/images/search-dark.png", "/images/search.png", () => {
+            router.push('/safety');
+        });
     };
 
-    const handleSensorsClick = () => {
-        console.log("センサーがタップされました");
-        // センサーがタップされた時の処理を追加
-        router.push('/');
+    const handlePhotoClick = () => {
+        console.log("写真がタップされました");
+        changeImageTemporarily(setPhotoImage, "/images/photo-dark.png", "/images/photo.png", () => {
+            router.push('/danger');
+        });
     };
 
     return (
         <div className="Footer">
             <img
                 className="Footer-button"
-                src="/images/sensors.png"
+                src={sensorImage}
                 alt="センサー"
                 onClick={handleSensorsClick}
             />
             <img
                 className="Footer-button"
-                src="/images/map.png"
+                src={mapImage}
                 alt="マップ"
                 onClick={handleMapClick}
             />
             <img
                 className="Footer-button"
-                src="/images/search.png"
+                src={searchImage}
                 alt="検索"
                 onClick={handleSearchClick}
             />
             <img
                 className="Footer-button"
-                src="/images/photo.png"
+                src={photoImage}
                 alt="写真"
                 onClick={handlePhotoClick}
             />

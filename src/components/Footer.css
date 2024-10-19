@@ -18,9 +18,9 @@
     z-index: 10; /* 他の要素の上に表示されるように */
 }
 .Footer-button {
-    width: 50px;
-    height: 50px;
-    margin: 10px 20px;
+    width: 70px;
+    height: 70px;
+    margin: 5px 20px;
     object-fit: contain; /* 画像が領域に収まるようにする */
     display: block; /* 確実に表示されるように */
 }
