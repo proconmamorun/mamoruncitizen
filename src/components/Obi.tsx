@@ -9,8 +9,7 @@ type ObiProps = {
 };
 
 export const Obi: React.FC<ObiProps> = ({ positions, isEvacuationPage }) => {
-  const [messages, setMessages] = useState<string[]>([]);
-  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+  const [message, setMessage] = useState<string>("警告: データがありません");
   const sliderRefs = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
@@ -18,57 +17,23 @@ export const Obi: React.FC<ObiProps> = ({ positions, isEvacuationPage }) => {
     const alertQuery = query(
       collection(db, "alert"),
       orderBy("createdAt", "desc"),
-      limit(3)
+      limit(1)
     );
 
     const unsubscribe = onSnapshot(alertQuery, (querySnapshot) => {
-      if (!querySnapshot.empty) {
-        const fetchedMessages = querySnapshot.docs.map(
-          (doc) => doc.data().text || "警告: データがありません"
-        );
-        setMessages(fetchedMessages);
-      } else {
-        setMessages([
-          "警告: データがありません",
-          "警告: データがありません",
-          "警告: データがありません",
-        ]);
-      }
+      const fetchedMessage = querySnapshot.empty
+        ? "警告: データがありません"
+        : querySnapshot.docs[0].data().text || "警告: データがありません";
+
+      setMessage(fetchedMessage);
     });
 
-    // クリーンアップ
     return () => unsubscribe();
   }, []);
 
-  const handleAnimationEnd = () => {
-    if (messages.length > 0) {
-      setCurrentMessageIndex((prevIndex) => (prevIndex + 1) % messages.length);
-    }
-  };
-
-  useEffect(() => {
-    sliderRefs.current.forEach((sliderElement) => {
-      if (sliderElement) {
-        sliderElement.addEventListener("animationend", handleAnimationEnd);
-      }
-    });
-
-    return () => {
-      sliderRefs.current.forEach((sliderElement) => {
-        if (sliderElement) {
-          sliderElement.removeEventListener("animationend", handleAnimationEnd);
-        }
-      });
-    };
-  }, [messages.length]);
-
-  if (messages[0] === "") {
-    return null;
-  }
-
   return (
     <>
-      {positions.map((pos, index) => {
+      {positions.map((pos, positionIndex) => {
         const isTop = pos === "top";
         const key = isTop ? "obi-top" : "obi-bottom";
         const positionClass = isTop ? "obiTop" : "obiBottom";
@@ -79,20 +44,21 @@ export const Obi: React.FC<ObiProps> = ({ positions, isEvacuationPage }) => {
             key={key}
             className={`obiBackground ${positionClass} ${additionalClass}`}
           >
-            <div
-              className="textSlider"
-              ref={(el) => {
-                if (el) {
-                  sliderRefs.current[index] = el;
-                }
-              }}
-            >
-              <div className="sliderTextWithIcon" key={currentMessageIndex}>
-                <img src="/images/obi-arrow.png" alt="矢印" className="arrowIcon" />
-                <img src="/images/warning.png" alt="警告" className="warningIcon" />
-                <p className="ObiMessage">{messages[currentMessageIndex]}</p>
+            {[...Array(3)].map((_, index) => (
+              <div
+                key={`slider-${positionIndex}-${index}`}
+                className="textSlider"
+                ref={(el) => {
+                  if (el) sliderRefs.current[index] = el;
+                }}
+              >
+                <div className="sliderTextWithIcon">
+                  <img src="/images/obi-arrow.png" alt="矢印" className="arrowIcon" />
+                  <img src="/images/warning.png" alt="警告" className="warningIcon" />
+                  <p className="ObiMessage">{message}</p>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         );
       })}
