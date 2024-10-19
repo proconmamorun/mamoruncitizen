@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import './home.css';
 import { useRouter } from 'next/navigation';
-import detectRotationAndUpload from './evacuation/RotationDetector';
 
 export default function Home() {
   const router = useRouter();
