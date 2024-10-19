@@ -30,11 +30,11 @@ async function getGeolocationFromGoogleAPI() {
 }
 
 // 位置情報を保存する共通関数
-async function saveLocationData(name: string, locale: string, latitude: number, longitude: number, isSafe: string, router: AppRouterInstance) {
+async function saveLocationData(name: string, district: string, latitude: number, longitude: number, isSafe: string, router: AppRouterInstance) {
   try {
     await addDoc(collection(db, 'citizen'), {
       name: name,
-      locale: locale,
+      district: district,
       latitude: latitude,
       longitude: longitude,
       safety: isSafe,
@@ -50,8 +50,8 @@ async function saveLocationData(name: string, locale: string, latitude: number, 
 // 位置情報を取得するメインの関数
 async function fetchLocation(isSafe: string, router: AppRouterInstance) {
   const name = localStorage.getItem('userName'); // LocalStorageからユーザー名を取得
-  const locale = localStorage.getItem('locale'); // LocalStorageから地域を取得
-  if (!name || !locale) {
+  const district = localStorage.getItem('district'); // LocalStorageから地域を取得
+  if (!name || !district) {
     console.error('ユーザー情報が保存されていません。');
     return;
   }
@@ -68,7 +68,7 @@ async function fetchLocation(isSafe: string, router: AppRouterInstance) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
 
-        await saveLocationData(name, locale, latitude, longitude, isSafe, router);
+        await saveLocationData(name, district, latitude, longitude, isSafe, router);
       },
       async (error) => {
         console.error('navigator.geolocation による位置情報取得に失敗しました:', error);
@@ -76,7 +76,7 @@ async function fetchLocation(isSafe: string, router: AppRouterInstance) {
         // navigator.geolocationが失敗した場合にGoogle Geolocation APIを使用
         try {
           const { latitude, longitude } = await getGeolocationFromGoogleAPI();
-          await saveLocationData(name, locale, latitude, longitude, isSafe, router);
+          await saveLocationData(name, district, latitude, longitude, isSafe, router);
         } catch (error) {
           console.error('Google Geolocation APIによる位置情報の取得にも失敗しました:', error);
         }
