@@ -31,8 +31,25 @@ export async function uploadImageWithLocationInFilename(imageUrl) {
     const response = await fetch(imageUrl);
     const blob = await response.blob();
 
+    let position;
+
     // 2. Google Geolocation APIを使用して現在位置を取得
-    const position = await getGeolocation();
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const position = { lat: latitude, lng: longitude };
+        },
+        (error) => {
+          console.error("位置情報の取得に失敗しました", error);
+          setError('位置情報の取得中にエラーが発生しました。');
+        },
+        { enableHighAccuracy: true }
+      );
+    }else{
+      position = await getGeolocation();
+    }
+    
     const { latitude, longitude } = position;
 
     // 3. ファイル名に緯度・経度を含める

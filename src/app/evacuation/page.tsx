@@ -14,13 +14,13 @@ const containerStyle = {
 };
 
 const defaultCenter = {
-  lat: 35.682839,
-  lng: 139.759455,
+  lat: 33.968860,
+  lng: 134.345329,
 };
 
 const fixedEndPoint = {
-  lat: 33.969532,
-  lng: 134.359609,
+  lat: 33.972830,
+  lng: 134.362823,
 };
 
 const options = {
@@ -45,7 +45,6 @@ export default function Evacuation() {
 
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [currentLocation, setCurrentLocation] = useState<google.maps.LatLngLiteral | null>(null);
-  const [mapCenter, setMapCenter] = useState<google.maps.LatLngLiteral>(defaultCenter);
   const [routeData, setRouteData] = useState<{ path: google.maps.LatLngLiteral[]; risks: Point[]; duration: number; length: number }>({
     path: [],
     risks: [],
@@ -86,12 +85,8 @@ export default function Evacuation() {
       // } else {
       //   setError('Geolocationがサポートされていません。');
       // }
-      const location = { lat: 33.973797, lng: 134.359609 };
+      const location = defaultCenter;
       setCurrentLocation(location);
-
-      if (!userMovedMap.current) {
-        setMapCenter(location);
-      }
     };
 
     getGeolocation();
@@ -123,20 +118,6 @@ export default function Evacuation() {
     }
   }, [currentLocation, fetchSafeRoute]);
 
-  // ユーザーがマップを動かした場合にフラグを立てる
-  const handleMapDragStart = () => {
-    userMovedMap.current = true;
-  };
-
-  const handleMapDragEnd = () => {
-    if (map) {
-      const center = map.getCenter();
-      if (center) {
-        setMapCenter({ lat: center.lat(), lng: center.lng() });
-      }
-    }
-  };
-
   if (loadError) {
     return <div>マップの読み込み中にエラーが発生しました。</div>;
   }
@@ -160,12 +141,10 @@ export default function Evacuation() {
         <GoogleMap
           mapContainerStyle={containerStyle}
           zoom={15}
-          center={mapCenter}
+          center={defaultCenter}
           mapTypeId={mapType}
           options={options}
           onLoad={(mapInstance) => setMap(mapInstance)}
-          onDragStart={handleMapDragStart}  // ドラッグ開始時にフラグを更新
-          onDragEnd={handleMapDragEnd}      // ドラッグ終了時に中心を更新
         >
           {routeData.path.length > 0 && (
             <Polyline path={routeData.path} options={{ strokeColor: '#0000FF', strokeWeight: 5 }} />
