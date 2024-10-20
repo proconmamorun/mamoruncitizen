@@ -9,7 +9,7 @@ type ObiProps = {
 };
 
 export const Obi: React.FC<ObiProps> = ({ positions, isEvacuationPage }) => {
-  const [message, setMessage] = useState<string>("警告: データがありません");
+  const [message, setMessage] = useState<string>("");
   const sliderRefs = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
@@ -22,8 +22,8 @@ export const Obi: React.FC<ObiProps> = ({ positions, isEvacuationPage }) => {
 
     const unsubscribe = onSnapshot(alertQuery, (querySnapshot) => {
       const fetchedMessage = querySnapshot.empty
-        ? "警告: データがありません"
-        : querySnapshot.docs[0].data().text || "警告: データがありません";
+        ? ""
+        : querySnapshot.docs[0].data().text || "";
 
       setMessage(fetchedMessage);
     });
@@ -33,7 +33,7 @@ export const Obi: React.FC<ObiProps> = ({ positions, isEvacuationPage }) => {
 
   return (
     <>
-      {positions.map((pos, positionIndex) => {
+      {message != "" && positions.map((pos, positionIndex) => {
         const isTop = pos === "top";
         const key = isTop ? "obi-top" : "obi-bottom";
         const positionClass = isTop ? "obiTop" : "obiBottom";
