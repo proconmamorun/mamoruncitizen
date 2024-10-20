@@ -38,6 +38,12 @@
   animation: slideLeft 10s linear infinite;
 }
 
+/* ホバーまたはタップ時にアニメーションを停止 */
+.obiBackground:hover .textSlider,
+.obiBackground:active .textSlider {
+  animation-play-state: paused; /* 一時停止 */
+}
+
 /* 各帯の設定 */
 .sliderTextWithIcon {
   display: flex;
