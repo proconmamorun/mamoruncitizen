@@ -165,7 +165,7 @@ export default function Evacuation() {
                 key={index}
                 position={{ lat: risk.lat, lng: risk.lng }}
                 icon={{
-                  url: riskIcons[risk.risk] || '/images/risk-1.png', // リスクに応じたアイコンを表示
+                  url: riskIcons[risk.risk - 1] || '/images/risk-1.png', // リスクに応じたアイコンを表示
                   scaledSize: new google.maps.Size(50, 50), // サイズを調整
                   anchor: new google.maps.Point(25, 25), // 基準点を設定
                 }}
