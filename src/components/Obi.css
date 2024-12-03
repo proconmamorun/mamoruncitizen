@@ -2,19 +2,89 @@
 
 /* 共通のスタイル */
 .obiBackground {
-    width: 100%;
-    height: 60px;
-    background-color: #E69F00; /* 黄色の背景 */
-    position: fixed; /* 固定表示 */
-    left: 0;
-    z-index: 100; /* 他の要素より前に表示する */
-    overflow: hidden; /* コンテンツが範囲外に表示されないようにする */
+  width: 100%;
+  height: 60px;
+  background-color: #E69F00; /* 黄色の背景 */
+  position: fixed; /* 固定表示 */
+  display: flex;
+  gap: 50px;
+  left: 0;
+  z-index: 100; /* 他の要素より前に表示する */
+  overflow: hidden; /* コンテンツが範囲外に表示されないようにする */
+}
+
+/* 上部に配置する場合 */
+.obiTop {
+  top: 0;
+}
+
+/* 下部に配置する場合 */
+.obiBottom {
+  bottom: 0; /* デフォルトは画面下部に配置 */
+}
+
+/* 下部の帯を上に移動する（非避難ページ用） */
+.obiBelow {
+  bottom: 90px; /* 必要に応じて調整 */
+}
+
+/* スライダーを透明にして背景と独立させる */
+.textSlider {
+  display: flex;
+  height: 60px;
+  white-space: nowrap;
+  position: relative;
+  background-color: transparent;
+  animation: slideLeft 10s linear infinite;
+}
+
+/* ホバーまたはタップ時にアニメーションを停止 */
+.obiBackground:hover .textSlider,
+.obiBackground:active .textSlider {
+  animation-play-state: paused; /* 一時停止 */
+}
+
+/* 各帯の設定 */
+.sliderTextWithIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+/* 矢印アイコンと警告アイコン */
+.arrowIcon {
+  width: 56px;
+  height: 56px;
+  margin-right: 5px;
+}
+
+.warningIcon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+/* 流れるメッセージの設定 */
+.ObiMessage {
+  font-size: 24px;
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+  font-weight: bold;
+}
+
+/* スライドアニメーション */
+@keyframes slideLeft {
+  0% {
+    transform: translateX(0%);
   }
-  
-  /* 上部に配置する場合 */
-  .obiTop {
-    top: 0;
+  100% {
+    transform: translateX(-50%);
   }
+<<<<<<< HEAD
   
   /* 下部に配置する場合 */
   .obiBottom {
@@ -87,3 +157,14 @@
     animation: slideLeft 40s linear infinite; 
   }
   
+=======
+}
+
+/* アニメーションの遅延を最小限に設定 */
+.textSlider {
+  animation-delay: 0s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation: slideLeft 40s linear infinite; 
+}
+>>>>>>> 12251632f9bb786dbe0ef8bf610126d8a9f7fa60

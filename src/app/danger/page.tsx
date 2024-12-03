@@ -42,8 +42,16 @@ export default function Danger() {
 
         const constraints = {
           video: videoInput
-            ? { deviceId: { exact: videoInput.deviceId } } // 外カメラを指定
-            : { facingMode: "environment" }, // 外カメラが見つからない場合、facingModeで試行
+            ? { 
+                deviceId: { exact: videoInput.deviceId },
+                width: { ideal: 720 }, // 幅を小さく
+                height: { ideal: 1280 }  // 高さを大きく
+              }
+            : { 
+                facingMode: "environment",
+                width: { ideal: 720 }, // 幅を小さく
+                height: { ideal: 1280 }  // 高さを大きく
+              },
         };
 
         const stream = await navigator.mediaDevices.getUserMedia(constraints);

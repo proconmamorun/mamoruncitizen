@@ -36,6 +36,15 @@ const options = {
   ],
 };
 
+// リスクアイコンのマッピング
+const riskIcons = [
+  '/images/risk-1.png',
+  '/images/risk-2.png',
+  '/images/risk-3.png',
+  '/images/risk-4.png',
+  '/images/risk-5.png',
+];
+
 export default function Evacuation() {
   const router = useRouter();
   const { isLoaded, loadError } = useJsApiLoader({
@@ -63,27 +72,6 @@ export default function Evacuation() {
   // 現在地の取得
   useEffect(() => {
     const getGeolocation = () => {
-      // if (navigator.geolocation) {
-      //   navigator.geolocation.getCurrentPosition(
-      //     (position) => {
-      //       const { latitude, longitude } = position.coords;
-      //       const location = { lat: latitude, lng: longitude };
-      //       setCurrentLocation(location);
-
-      //       // ユーザーがマップを動かしていない場合のみ、マップの中心を現在地に更新
-      //       if (!userMovedMap.current) {
-      //         setMapCenter(location);
-      //       }
-      //     },
-      //     (error) => {
-      //       console.error("位置情報の取得に失敗しました", error);
-      //       setError('位置情報の取得中にエラーが発生しました。');
-      //     },
-      //     { enableHighAccuracy: true }
-      //   );
-      // } else {
-      //   setError('Geolocationがサポートされていません。');
-      // }
       const location = defaultCenter;
       setCurrentLocation(location);
     };
@@ -147,43 +135,50 @@ export default function Evacuation() {
             <Polyline path={routeData.path} options={{ strokeColor: '#0000FF', strokeWeight: 5 }} />
           )}
 
-          {currentLocation && <Marker
-            position={currentLocation}
-            icon={{
-              path: google.maps.SymbolPath.CIRCLE,
-              scale: 16,
-              fillColor: '#0000FF',
-              fillOpacity: 1,
-              strokeWeight: 10,
-              strokeColor: '#FFFFFF',
-              strokeOpacity: 0.7
-            }}/>}
+          {currentLocation && (
+            <Marker
+              position={currentLocation}
+              icon={{
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 16,
+                fillColor: '#0000FF',
+                fillOpacity: 1,
+                strokeWeight: 10,
+                strokeColor: '#FFFFFF',
+                strokeOpacity: 0.7,
+              }}
+            />
+          )}
 
           <Marker
             position={fixedEndPoint}
             icon={{
-              url: '/images/shelter.png',  // publicディレクトリ経由でのパス
-              scaledSize: new google.maps.Size(50, 50),  // アイコンのサイズ調整
-              anchor: new google.maps.Point(25, 25),  // 基準点の設定
-            }}/>
+              url: '/images/shelter.png', // publicディレクトリ経由でのパス
+              scaledSize: new google.maps.Size(50, 50), // アイコンのサイズ調整
+              anchor: new google.maps.Point(25, 25), // 基準点の設定
+            }}
+          />
 
           {routeData.risks.map((risk, index) => (
             risk.lat && risk.lng && (
               <Marker
                 key={index}
                 position={{ lat: risk.lat, lng: risk.lng }}
-                label={`${risk.risk}`}
                 icon={{
-                  path: google.maps.SymbolPath.CIRCLE,
-                  scale: 10,
-                  fillColor: '#FF0000',
-                  fillOpacity: 1,
-                  strokeWeight: 1,
-                  strokeColor: '#000000',
+                  url: riskIcons[risk.risk - 1] || '/images/risk-1.png', // リスクに応じたアイコンを表示
+                  scaledSize: new google.maps.Size(50, 50), // サイズを調整
+                  anchor: new google.maps.Point(25, 25), // 基準点を設定
                 }}
               />
             )
           ))}
+
+          {/* danger-grade.pngを追加 */}
+          <img
+            src="/images/danger-grade.png" // 画像のパスを調整
+            alt="Danger Grade"
+            className={styles['danger-grade']}
+          />
         </GoogleMap>
       </div>
 

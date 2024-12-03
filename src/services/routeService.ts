@@ -94,7 +94,7 @@ const isViolated = (response: HereServiceResponse): boolean => {
 // Function to get safe pedestrian route and convert to Google Maps polyline format
 // Function to get safe pedestrian route and convert to Google Maps polyline format
 export async function GetSafePedestrianRoute(
-    startPoint: [number, number],
+    startPoint: [number, number] = [33.97401361728357, 134.36019785411662],
     endPoint: [number, number]
 ): Promise<[{
     lat: number;
