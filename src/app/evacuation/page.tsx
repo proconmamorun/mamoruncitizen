@@ -17,6 +17,7 @@ const defaultCenter = {
   lng: 134.345329,
 };
 
+// 目的地を指定
 const fixedEndPoint = {
   lat: 33.972830,
   lng: 134.362823,

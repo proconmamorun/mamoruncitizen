@@ -84,7 +84,6 @@
   100% {
     transform: translateX(-50%);
   }
-<<<<<<< HEAD
   
   /* 下部に配置する場合 */
   .obiBottom {
@@ -157,7 +156,6 @@
     animation: slideLeft 40s linear infinite; 
   }
   
-=======
 }
 
 /* アニメーションの遅延を最小限に設定 */
@@ -167,4 +165,3 @@
   animation-iteration-count: infinite;
   animation: slideLeft 40s linear infinite; 
 }
->>>>>>> 12251632f9bb786dbe0ef8bf610126d8a9f7fa60

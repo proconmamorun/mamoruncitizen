@@ -75,6 +75,46 @@ const searchRouteForPedestrians = async (
     }
 };
 
+export async function GetSafePedestrianRouteWithCurrentLocation(
+    endPoint: [number, number]
+): Promise<[{
+    lat: number;
+    lng: number;
+}[], Point[], { duration: number, length: number }]> {
+    // 現在地を取得するPromiseを作成
+    const getCurrentLocation = (): Promise<[number, number]> => {
+        return new Promise((resolve, reject) => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        // デバッグ用ログ
+                        console.log("Current location:", position.coords.latitude, position.coords.longitude); 
+                        resolve([position.coords.latitude, position.coords.longitude]);
+                    },
+                    (error) => {
+                        console.error("Geolocation error:", error);
+                        reject("Failed to get current location");
+                    }
+                );
+            } else {
+                reject("Geolocation is not supported by this browser");
+            }
+        });
+    };
+
+    try {
+        // 現在地を取得
+        const startPoint = await getCurrentLocation();
+
+        // 安全な歩行者ルートを取得
+        return await GetSafePedestrianRoute(startPoint, endPoint);
+    } catch (error) {
+        console.error("Error getting safe pedestrian route with current location:", error);
+        throw new Error("Failed to get safe pedestrian route with current location");
+    }
+}
+
+
 // Convert HERE API polyline to Google Maps API polyline format
 const convertToGooglePolyline = (encodedPolyline: string): { lat: number; lng: number }[] => {
     const decodedPath = decode(encodedPolyline).polyline;
@@ -94,7 +134,7 @@ const isViolated = (response: HereServiceResponse): boolean => {
 // Function to get safe pedestrian route and convert to Google Maps polyline format
 // Function to get safe pedestrian route and convert to Google Maps polyline format
 export async function GetSafePedestrianRoute(
-    startPoint: [number, number] = [33.97401361728357, 134.36019785411662],
+    startPoint: [number, number],
     endPoint: [number, number]
 ): Promise<[{
     lat: number;
