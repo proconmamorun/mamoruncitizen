@@ -150,6 +150,8 @@ export async function GetSafePedestrianRoute(
         }
     });
 
+    console.log("Start point from getCurrentLocation:", startPoint);
+
     // Get route from HERE API
     let response: HereServiceResponse = await searchRouteForPedestrians(startPoint, endPoint, risks);
     console.log(response);
