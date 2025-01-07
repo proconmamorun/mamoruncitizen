@@ -72,17 +72,44 @@ export default function Evacuation() {
 
   // 現在地の取得
   useEffect(() => {
-    const getGeolocation = () => {
-      const location = defaultCenter;
-      setCurrentLocation(location);
+    const getGeolocation = async () => {
+        if (!navigator.geolocation) {
+            console.error("Geolocation is not supported by this browser.");
+            setError("このブラウザでは位置情報がサポートされていません。");
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const location = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+                console.log("現在地を取得:", location);
+                setCurrentLocation(location);
+            },
+            (error) => {
+                console.error("位置情報取得エラー:", error);
+                setError("現在地の取得中にエラーが発生しました。");
+            },
+            {
+                enableHighAccuracy: true, // 高精度の位置情報を取得
+                timeout: 10000, // タイムアウト時間
+                maximumAge: 0,  // キャッシュされた位置情報を使用しない
+            }
+        );
     };
 
-    getGeolocation();
+    getGeolocation(); // 初回取得
+
+    // 位置情報を定期的に更新
     const locationInterval = setInterval(getGeolocation, 10000);
+
     return () => {
-      clearInterval(locationInterval);
+        clearInterval(locationInterval);
     };
-  }, []);
+}, []);
+
 
   const fetchSafeRoute = useCallback(async () => {
     if (currentLocation) {
@@ -127,7 +154,7 @@ export default function Evacuation() {
         <GoogleMap
           mapContainerStyle={containerStyle}
           zoom={15}
-          center={defaultCenter}
+          center={currentLocation || defaultCenter}
           mapTypeId={mapType}
           options={options}
           onLoad={(mapInstance) => setMap(mapInstance)}
