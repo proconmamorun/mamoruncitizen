@@ -1,14 +1,14 @@
 /* src/app/danger/preview/preview.module.css */
 .App {
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-    padding-top: 20px; /* 全体を下に少し移動 */
-  }
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 130vh;
+  overflow-y: auto; /* ここを変更 */
+  padding-top: 20px; /* 全体を下に少し移動 */
+}
   
   .previewContainer {
     display: flex;
