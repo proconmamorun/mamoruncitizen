@@ -1,18 +1,20 @@
 /* スクロール無効化 */
 html, body {
-    overflow: hidden;
-    height: 100%;
+  overflow-y: auto;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 
 .main {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6rem;
-    min-height: 100vh;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6rem;
+  min-height: 100vh;
+}
   
   .description {
     display: inherit;
@@ -134,11 +136,8 @@ html, body {
     background-color: transparent;
     border: none;
     box-shadow: none;
-    margin-top: -35px; /* コンテナ全体を10px上に移動 */
+    margin-top: -35px; /* 必要に応じて調整 */
 }
-
-  
-  
   
   .logo {
     position: relative;
@@ -263,4 +262,10 @@ html, body {
       transform: rotate(0deg);
     }
   }
-  
+  footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff; /* 必要に応じて調整 */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* 必要に応じて調整 */
+}
